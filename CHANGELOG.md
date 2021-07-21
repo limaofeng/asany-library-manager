@@ -1,3 +1,12 @@
+## [0.1.3](https://github.com/limaofeng/asany-library-manager/compare/v0.1.2...v0.1.3) (2021-07-21)
+
+
+### Bug Fixes
+
+* 使用 lodash-es 替换 lodash ([0ddfc2c](https://github.com/limaofeng/asany-library-manager/commit/0ddfc2c6f0dfa9116c74c69c07f1e0fdaa8edb5e))
+
+
+
 ## [0.1.2](https://github.com/limaofeng/asany-library-manager/compare/v0.1.1...v0.1.2) (2021-07-21)
 
 
