@@ -1,7 +1,5 @@
-import LibraryManager, { connect } from './LibraryManager';
-
+import LibraryManager from './LibraryManager';
+export * from './LibraryManager';
 export * from './typings';
-
-export const registerComponent = connect;
 
 export default LibraryManager;

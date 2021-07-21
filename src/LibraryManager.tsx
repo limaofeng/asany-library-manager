@@ -292,7 +292,7 @@ interface ConnectInfo {
   library?: string;
 }
 
-export function connect<T = any>(
+export function registerComponent<T = any>(
   info: ConnectInfo,
   Component: React.ComponentType<T>
 ): React.ComponentType<T> {
