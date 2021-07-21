@@ -42,14 +42,15 @@
   },
   "name": "@asany/library-manager",
   "author": "李茂峰",
-  "module": "dist/asany-library-manager.esm.js",
+  "repository": "https://github.com/limaofeng/asany-library-manager",
+  "module": "dist/library-manager.esm.js",
   "size-limit": [
     {
-      "path": "dist/asany-library-manager.cjs.production.min.js",
+      "path": "dist/library-manager.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/asany-library-manager.esm.js",
+      "path": "dist/library-manager.esm.js",
       "limit": "10 KB"
     }
   ],
