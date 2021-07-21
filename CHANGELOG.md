@@ -1,3 +1,12 @@
+## [0.1.4](https://github.com/limaofeng/asany-library-manager/compare/v0.1.3...v0.1.4) (2021-07-21)
+
+
+### Bug Fixes
+
+* 修复导出逻辑 ([6b82507](https://github.com/limaofeng/asany-library-manager/commit/6b82507867d04f014bc3d428e45508e20b6ace3a))
+
+
+
 ## [0.1.3](https://github.com/limaofeng/asany-library-manager/compare/v0.1.2...v0.1.3) (2021-07-21)
 
 
