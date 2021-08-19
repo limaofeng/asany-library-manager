@@ -47,11 +47,11 @@
   "size-limit": [
     {
       "path": "dist/sunmao.cjs.production.min.js",
-      "limit": "10 KB"
+      "limit": "512 KB"
     },
     {
       "path": "dist/sunmao.esm.js",
-      "limit": "10 KB"
+      "limit": "512 KB"
     }
   ],
   "devDependencies": {
