@@ -40,17 +40,17 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "@asany/library-manager",
+  "name": "sunmao",
   "author": "李茂峰",
-  "repository": "https://github.com/limaofeng/asany-library-manager",
-  "module": "dist/library-manager.esm.js",
+  "repository": "https://github.com/limaofeng/sunmao",
+  "module": "dist/sunmao.esm.js",
   "size-limit": [
     {
-      "path": "dist/library-manager.cjs.production.min.js",
+      "path": "dist/sunmao.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/library-manager.esm.js",
+      "path": "dist/sunmao.esm.js",
       "limit": "10 KB"
     }
   ],
