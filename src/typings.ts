@@ -4,16 +4,20 @@ export interface ReactComponent {
   [key: string]: React.ReactElement | ReactComponent | any;
 }
 
-export enum LibraryCategory {
-  web,
-  mobile,
-}
-
-export interface ILibrary {
+export class AbstractLibrary {
   id: string;
   name: string;
-  category?: LibraryCategory;
-  components: IComponent[];
+
+  constructor(id: string, name: string) {
+    this.id = id;
+    this.name = name;
+  }
+}
+
+export interface ILibraryDefinition {
+  id: string;
+  name: string;
+  components: IComponentDefinition[];
 }
 
 export interface ITemplate {
@@ -28,12 +32,12 @@ export interface IComponentCascader {
   value: string;
   label: string;
   parent: string;
-  component?: IComponent;
-  children?: IComponent[];
+  component?: IComponentDefinition;
+  children?: IComponentDefinition[];
 }
 
 export interface ICloudComponent extends FC<any> {
-  info: IComponent;
+  info: IComponentDefinition;
   [key: string]: any;
 }
 
@@ -60,20 +64,18 @@ export enum ComponentPropertyType {
   File = 'File',
 }
 
-export type ComponentSelector = (component: IComponent) => boolean;
+export type SubscribeCallback = () => void;
 
-export type ComponentSorter = (a: IComponent, b: IComponent) => number;
+export type ComponentSelector = (component: IComponentDefinition) => boolean;
+
+export type ComponentSorter = (a: IComponentDefinition, b: IComponentDefinition) => number;
 
 export type ComponentPropertyRendererSetting = {
   component: ComponentPropertyRenderer | FC<any> | string;
   props: { [key: string]: any };
 };
 
-export type ComponentPropertyRenderer =
-  | string
-  | FC<any>
-  | ComponentPropertyRendererSetting
-  | any;
+export type ComponentPropertyRenderer = string | FC<any> | ComponentPropertyRendererSetting | any;
 
 export type VisibleFunc = (props: any) => boolean;
 
@@ -173,17 +175,14 @@ export interface IComponentVersion {
   version: string;
 }
 
-export interface IComponent {
+export interface IComponentDefinition {
   // 组件名称
   id: string;
   name: string;
-  group?: string;
   icon?: string;
   component: any;
   // 组件标签
   tags?: string[];
-  platform?: IComponentPlatform;
-  category?: IComponentCategory;
   versions?: IComponentVersion[];
   drag?: {
     size: {
@@ -206,5 +205,50 @@ export interface IComponent {
   /**
    * 所属组件库
    */
-  library?: ILibrary | string;
+  library?: ILibraryDefinition | string;
 }
+
+export type LibraryMetadata = {
+  /**
+   * 名称
+   */
+  name: string;
+  /**
+   * 描述
+   */
+  description?: string;
+  /**
+   * 支持通过配置 namespace 减少每个组件上的路径设置
+   */
+  namespace?: string;
+  /**
+   * 预留
+   */
+  [key: string]: any;
+};
+
+export interface ComponentMetadata {
+  /**
+   * 组件名称 (唯一)
+   * 默认为字段名
+   */
+  name?: string;
+  /**
+   * 图标
+   */
+  icon?: string;
+  /**
+   * 描述
+   */
+  description?: string;
+  /**
+   * 组件标签
+   */
+  tags?: string[];
+  /**
+   * 预留
+   */
+  [key: string]: any;
+}
+
+export const METADATA_KEY_COMPONENTS = '_COMPONENTS';

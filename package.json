@@ -35,7 +35,7 @@
     }
   },
   "prettier": {
-    "printWidth": 80,
+    "printWidth": 120,
     "semi": true,
     "singleQuote": true,
     "trailingComma": "es5"
@@ -84,6 +84,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "lodash-es": "^4.17.21"
+    "lodash-es": "^4.17.21",
+    "reflect-metadata": "^0.1.13"
   }
 }
