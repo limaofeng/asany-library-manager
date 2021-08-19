@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash-es';
+import isEqual from 'lodash-es/isEqual';
 import { useEffect, useRef } from 'react';
 
 function deepCompareEquals(a: any, b: any) {

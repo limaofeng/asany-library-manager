@@ -46,7 +46,7 @@ function TestSunmao() {
   );
 }
 
-const Template: Story = (args) => {
+const Template: Story = () => {
   const sunmao = new Sunmao();
 
   const x = new TestLibrary();
@@ -64,12 +64,6 @@ const Template: Story = (args) => {
   return (
     <SunmaoProvider sunmao={sunmao}>
       <div>...SunmaoProvider...</div>
-      {components.map((it) => (
-        <React.Fragment key={it.name}>
-          <br />
-          {React.createElement(it.component)}
-        </React.Fragment>
-      ))}
       <TestSunmao />
     </SunmaoProvider>
   );
