@@ -1,6 +1,12 @@
 import isEqual from 'lodash-es/isEqual';
 import { useEffect, useRef } from 'react';
 
+export function generateUUID() {
+  return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c: any) =>
+    (c ^ (crypto.getRandomValues(new Uint32Array(1))[0] & (15 >> (c / 4)))).toString(16)
+  );
+}
+
 function deepCompareEquals(a: any, b: any) {
   return isEqual(a, b);
 }
@@ -31,3 +37,10 @@ export function copyMetadata(from: any, to: any) {
     Reflect.defineMetadata(key, Reflect.getMetadata(key, from), to);
   }
 }
+
+export const sleep = (time: number) =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(0);
+    }, time);
+  });

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { ComponentType, CSSProperties, DependencyList, FC, MouseEventHandler } from 'react';
 
 export interface ReactComponent {
   [key: string]: React.ReactElement | ReactComponent | any;
@@ -180,7 +180,7 @@ export interface IComponentDefinition {
   id: string;
   name: string;
   icon?: string;
-  component: any;
+  component: ComponentType;
   // 组件标签
   tags?: string[];
   versions?: IComponentVersion[];
@@ -252,3 +252,131 @@ export interface ComponentMetadata {
 }
 
 export const METADATA_KEY_COMPONENTS = '_COMPONENTS';
+
+export interface ISketchState {
+  blocks: IBlockData[];
+}
+
+type UnsubscribeFunc = () => void;
+
+type SubscribeFunc = (callback: SubscribeCallback) => UnsubscribeFunc;
+
+export type SketchActionType =
+  /**
+   * 注册区块
+   */
+  | 'RegistrationBlock'
+  /**
+   * 卸载区块
+   */
+  | 'UninstallBlock'
+  /**
+   * 推入区块
+   */
+  | 'PushBlock'
+  /**
+   * 弹出区块
+   */
+  | 'PopBlock'
+  /**
+   * 选中区块
+   */
+  | 'SelectedBlock'
+  /**
+   * 取消区块选择
+   */
+  | 'UncheckBlock'
+  /**
+   * 更新 Block 数据
+   */
+  | 'UpdateBlockProps'
+  /**
+   * 更新 Block 数据
+   */
+  | 'UpdateBlockMoreProps'
+  /**
+   * 更新 Block 定制器
+   */
+  | 'UpdateBlockCustomizer';
+
+export interface SketchAction {
+  type: SketchActionType;
+  payload?: any;
+}
+
+export type DispatchWithoutAction = (action: SketchAction) => void;
+
+export type ISketchStoreContext = {
+  getState: () => ISketchState;
+  subscribe: SubscribeFunc;
+  dispatch: DispatchWithoutAction;
+};
+
+export interface SketchProviderProps {
+  children: JSX.Element;
+  value: IBlockData<any>[];
+  version?: number;
+}
+
+export interface IBlockState {
+  version: number;
+  definition: IComponentDefinition;
+  activeKey?: string;
+  blocks: IBlockData<any>[];
+  stack: string[];
+}
+
+export interface IBlockData<T = any> {
+  key: string;
+  icon: string;
+  title: string;
+  props?: T;
+  customizer?: ICustomizer;
+  version?: number;
+}
+
+export interface ICustomizer {
+  /**
+   * 配置字段
+   */
+  fields: IComponentProperty[];
+}
+
+export interface IUpdateBlockData {
+  title: any;
+  key: string;
+  props: any;
+  customizer: any;
+}
+
+export type Selector<Selected> = (state: ISketchState) => Selected;
+export type EqualityFn<Selected> = (theNew: Selected, latest: Selected) => boolean;
+
+export interface IBlockDataProps {
+  [key: string]: any;
+}
+
+export interface IBlockOptions<T> extends IBlockData<T> {}
+
+export interface IBlockProviderProps {
+  ref?: any;
+  children?: any;
+  onClick?: MouseEventHandler<HTMLDivElement>;
+  clickable?: boolean;
+  style?: CSSProperties;
+  className?: string;
+  deps?: DependencyList | undefined;
+}
+
+export type UpdateFunc<T> = (props: T | string, value?: any) => void;
+
+export interface IUseBlockState<T> extends IBlockData<T> {
+  onClick: (e?: React.MouseEvent) => void;
+  update: UpdateFunc<T>;
+  props: T;
+  Provider: React.ComponentType<IBlockProviderProps>;
+}
+
+export type RefCallback = (ref: any) => any;
+
+// export type IUseBlock<T> = [IUseBlockState<T>, RefCallback];
