@@ -15,6 +15,7 @@ import Sunmao, {
 import Showme from './Showme';
 import { useEffect } from '@storybook/addons';
 import { useDispatch } from '../src/sketch/ReactComponentProvider';
+import { sleep } from '../src/utils';
 
 const meta: Meta = {
   title: 'Sketch',
@@ -48,6 +49,24 @@ function TestSunmao() {
   const Component = useReactComponent('cn.asany.ui.sunmao.test.Showme');
 
   const sketch = useSketch();
+
+  sketch.on('block-click', async (id) => {
+    console.log('block-click', id);
+    const block = sketch.getBlock(id);
+    console.log('block:', block);
+    console.log('html element:', document.getElementById(block.id));
+    const [comid, blkey] = block.id.split(':');
+    // sketch.updateComponent(comid, [
+    //   {
+    //     key: blkey,
+    //     props: { title: '我设置的' },
+    //   },
+    // ]);
+    sketch.updateBlock(block.id, { title: '我设置的' });
+    await sleep(200);
+    const data = sketch.getComponentData(comid);
+    console.log('getComponentData', data);
+  });
 
   const handleView = () => {
     console.log(sketch);

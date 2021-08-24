@@ -1,6 +1,7 @@
 import classnames from 'classnames';
 import { isEqual } from 'lodash-es';
 import React, { useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { useSketch } from '../sketch';
 
 import { ReactComponentContext, useDispatch } from '../sketch/ReactComponentProvider';
 import {
@@ -11,7 +12,6 @@ import {
   DivProvider,
   IReactComponentStoreContext,
 } from '../typings';
-import { sleep } from '../utils';
 
 // import { OnResize, OnResizeEnd, OnResizeStart } from 'react-moveable';
 
@@ -33,16 +33,20 @@ export const BlockContext = React.createContext<IBlockContext>({
 });
 
 // TODO 会导致不能刷新 / 或者频繁刷新
-function buildBlockProvider(blockKey: string, cache: React.RefObject<UseBlockCache<any>>): React.ComponentType<any> {
-  const keys = blockKey.split('/');
-  const lastKey = keys[keys.length - 1];
+function buildBlockProvider(
+  blockKey: string,
+  cache: React.RefObject<UseBlockCache<any, any>>
+): React.ComponentType<any> {
   return React.forwardRef(
     (
       { tag, clickable, children, onClick: handleClick, deps, ...props }: IBlockProviderProps<any> & DivProvider,
       ref
     ) => {
       const context = useRef({ parentBlockKey: blockKey });
-      const [{ onClick }, blockRef] = cache.current!.result;
+      const {
+        id,
+        result: { onClick },
+      } = cache.current!;
       return useMemo(() => {
         return (
           <BlockContext.Provider value={context.current}>
@@ -52,8 +56,8 @@ function buildBlockProvider(blockKey: string, cache: React.RefObject<UseBlockCac
                 ...props,
                 onClick: handleClick || onClick,
                 className: classnames(`block-provider`, props.className),
-                'data-block-key': lastKey,
-                ref: ref ? blockRef(ref) : blockRef,
+                ref,
+                id,
               },
               children
             )}
@@ -93,10 +97,11 @@ export function useBlockContext(key: string) {
   return state;
 }
 
-type UseBlockCache<T> = {
+type UseBlockCache<T, P> = {
+  id: string;
   key: string;
   options: IBlockOptions<T>;
-  result: IUseBlock<T>;
+  result: IUseBlock<T, P>;
 };
 
 export default function useBlock<P = DivProvider, T extends IBlockDataProps = any>(
@@ -104,14 +109,15 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
 ): IUseBlock<T, P> {
   // 初始化状态 - 向 Sketch 注册之后标示为 true
   // const editor = useEditor();
+  const sketch = useSketch();
   const store = useContext<IReactComponentStoreContext>(ReactComponentContext);
   // const initialized = useRef(false);
   // const emitter = useRef<EventEmitter>(new EventEmitter());
   // 创建 ref 用于生成定位框指向元素的位置
-  const block = useRef<HTMLDivElement>();
+  // const block = useRef<HTMLDivElement>();
   // 获取 block 的 key 即原来的 parentBlockKey + key
   const { key } = useBlockContext(options.key);
-  const cache = useRef<UseBlockCache<T>>({ key, options, result: [] as any });
+  const cache = useRef<UseBlockCache<T, P>>({ id: store.id + ':' + key, key, options, result: [] as any });
   const latestProps = useRef<any>(options.props);
   // 使用生成的 key 组合新的 data 数据
   // const dataRef = useRef<IBlockOptions<T>>({ ...options, key });
@@ -121,14 +127,14 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
   // 通过 customizer.fields 及 data.props 生成配置默认数据
   // const props = useRef<any>(initialize(data.customizer?.fields || [], { ...data.props }));
   // 是否显示选框
-  const isMoveable = useRef<boolean>(false);
+  // const isMoveable = useRef<boolean>(false);
   // const handleScenaClick = useSelector((state) => state.ui.scena.onClick);
 
   const dispatch = useDispatch();
 
   // const client = useApolloClient();
   const [version, forceRender] = useReducer((s) => s + 1, 0);
-  const disabled = false; // TODO: useSelector((state) => state.mode === 'VIEW' || !state.features.block);
+  // const disabled = false; // TODO: useSelector((state) => state.mode === 'VIEW' || !state.features.block);
   // const values = useSelector((state) => state.blocks.find(({ key: itemKey }) => itemKey === data.key)?.props || data.props, isEqual);
 
   const handleChange = useCallback((props: T | string, value: string) => {
@@ -180,17 +186,19 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
 
   const handleClick = useCallback(
     (e?: React.MouseEvent) => {
-      if (disabled) {
-        return;
-      }
+      const { id } = cache.current;
+      // if (disabled) {
+      //   return;
+      // }
       e && e.stopPropagation();
-      if (isMoveable.current) {
-        return;
-      }
+      sketch.trigger('block-click', id);
+      // if (isMoveable.current) {
+      //   return;
+      // }
       // TODO 如果为 moveable 事件，不触发 SelectedBlock 逻辑
-      if (e && (e.target as any).className.includes && (e.target as any).className.includes('moveable-control')) {
-        return;
-      }
+      // if (e && (e.target as any).className.includes && (e.target as any).className.includes('moveable-control')) {
+      //   return;
+      // }
       // TODO: dispatch
       // handleScenaClick &&
       //   handleScenaClick(editor, {
@@ -209,16 +217,16 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
 
   // 向 workspace 中注册当前 block
   useEffect(() => {
-    const { key, options } = cache.current;
+    const { id, key, options } = cache.current;
     dispatch({
       type: 'RegistrationBlock',
       payload: {
         ...options,
         customizer: options.customizer || { fields: [] },
-        element: block,
         update: handleChange,
         click: handleClick,
         key,
+        id,
       },
     });
     return () => {
@@ -255,30 +263,30 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
   //   return unbuildMouseEffect;
   // }, [block.current, disabled]);
 
-  const loadBlockRef = useCallback(async (ref: any) => {
-    if (!ref) {
-      return;
-    }
-    if (ref.hasOwnProperty('current')) {
-      if (!ref.current) {
-        await sleep(100);
-        await loadBlockRef(ref);
-        return;
-      }
-      if (block.current == ref.current) {
-        return;
-      }
-      block.current = ref.current;
-    } else {
-      block.current = ref;
-    }
-  }, []);
+  // const loadBlockRef = useCallback(async (ref: any) => {
+  //   if (!ref) {
+  //     return;
+  //   }
+  //   if (ref.hasOwnProperty('current')) {
+  //     if (!ref.current) {
+  //       await sleep(100);
+  //       await loadBlockRef(ref);
+  //       return;
+  //     }
+  //     if (block.current == ref.current) {
+  //       return;
+  //     }
+  //     block.current = ref.current;
+  //   } else {
+  //     block.current = ref;
+  //   }
+  // }, []);
 
   // 将 ref 包装为单独的函数
-  const refCallback = useCallback((ref: any) => {
-    loadBlockRef(ref);
-    return ref;
-  }, []);
+  // const refCallback = useCallback((ref: any) => {
+  //   loadBlockRef(ref);
+  //   return ref;
+  // }, []);
 
   // 通过 data.customizer 为 block 添加监听处理 hook 逻辑
   // useEffect(() => {
@@ -365,16 +373,19 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
     return unsubscribe;
   }, []);
 
-  return (cache.current.result = [
-    {
+  cache.current.result = useMemo(
+    () => ({
       ...cache.current.options,
+      id: cache.current.id,
       key,
       onClick: handleClick,
       update: handleChange,
       props: latestProps.current,
       Provider,
       version,
-    },
-    refCallback,
-  ]);
+    }),
+    [latestProps.current, version]
+  );
+
+  return cache.current.result;
 }

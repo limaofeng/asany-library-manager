@@ -3,7 +3,7 @@ import { useBlock } from '../src/hooks';
 import { ComponentPropertyType } from '../src/typings';
 
 function Showme() {
-  const [{ key, props, update, Provider }] = useBlock<ACProps>({
+  const { key, props, update, Provider } = useBlock({
     key: 'xxx',
     icon: '',
     title: '',
@@ -30,20 +30,10 @@ function Showme() {
   console.log('>>>>>', props.title);
 
   return (
-    <Provider clickable={true} name="" tag={AC}>
+    <Provider clickable={true}>
       Show me your code: {props.title} <br /> key = {key}
     </Provider>
   );
 }
-
-interface ACProps {
-  name: string;
-  children: React.ReactNode;
-}
-
-const AC = React.forwardRef(function (p: ACProps, ref: any) {
-  // console.log('ref => ', ref);
-  return <span ref={ref}>{p.children}</span>;
-});
 
 export default Showme;

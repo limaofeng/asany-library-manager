@@ -293,7 +293,7 @@ export type ReactComponentActionType =
   /**
    * 更新 Block 数据
    */
-  | 'UpdateBlockMoreProps'
+  | 'UpdateAllBlockProps'
   /**
    * 更新 Block 定制器
    */
@@ -307,6 +307,7 @@ export interface ReactComponentAction {
 export type DispatchWithoutAction = (action: ReactComponentAction) => void;
 
 export type IReactComponentStoreContext = {
+  id: string;
   getState: () => IReactComponentState;
   subscribe: SubscribeFunc;
   dispatch: DispatchWithoutAction;
@@ -327,6 +328,7 @@ export interface IBlockState {
 }
 
 export interface IBlockData<T = any> {
+  id: string;
   key: string;
   icon: string;
   title: string;
@@ -343,10 +345,8 @@ export interface ICustomizer {
 }
 
 export interface IUpdateBlockData {
-  title: any;
   key: string;
   props: any;
-  customizer: any;
 }
 
 export type Selector<Selected> = (state: IReactComponentState) => Selected;
@@ -377,6 +377,4 @@ export interface IUseBlockState<T, P = DivProvider> extends IBlockData<T> {
 
 export type DivProvider = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
-export type RefCallback = (ref: any) => any;
-
-export type IUseBlock<T, P = DivProvider> = [IUseBlockState<T, P>, RefCallback];
+export type IUseBlock<T, P = DivProvider> = IUseBlockState<T, P>;

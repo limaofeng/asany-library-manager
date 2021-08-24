@@ -36,7 +36,7 @@ export default function reducer(state: IBlockState, action: ReactComponentAction
   // }
   // console.log('action:', state, action);
   switch (action.type) {
-    case 'UpdateBlockMoreProps':
+    case 'UpdateAllBlockProps':
       return {
         ...state,
         version: state.version + 1,
@@ -94,6 +94,7 @@ export default function reducer(state: IBlockState, action: ReactComponentAction
     //     };
     case 'UpdateBlockProps': {
       const data = action.payload as IUpdateBlockData;
+      console.log('action:', action);
       return {
         ...state,
         version: state.version + 1,

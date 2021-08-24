@@ -38,6 +38,7 @@ function useStore(): IReactComponentStoreContext {
     }
   }, []);
   const initStore = {
+    id: COMPONENT_ID,
     getState: () => state,
     dispatch,
     subscribe: handleSubscribe,
