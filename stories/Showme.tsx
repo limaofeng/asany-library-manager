@@ -23,7 +23,7 @@ function Showme() {
   useEffect(() => {
     const timer = setInterval(() => {
       update('title', 'Time =>' + Date.now());
-    }, 1000);
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
@@ -42,7 +42,7 @@ interface ACProps {
 }
 
 const AC = React.forwardRef(function (p: ACProps, ref: any) {
-  console.log('ref => ', ref);
+  // console.log('ref => ', ref);
   return <span ref={ref}>{p.children}</span>;
 });
 

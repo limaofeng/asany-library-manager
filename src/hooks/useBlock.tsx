@@ -2,14 +2,14 @@ import classnames from 'classnames';
 import { isEqual } from 'lodash-es';
 import React, { useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 
-import { SketchContext, useDispatch } from '../sketch/SketchProvider';
+import { ReactComponentContext, useDispatch } from '../sketch/ReactComponentProvider';
 import {
   IBlockDataProps,
   IBlockOptions,
   IBlockProviderProps,
-  ISketchStoreContext,
   IUseBlock,
   DivProvider,
+  IReactComponentStoreContext,
 } from '../typings';
 import { sleep } from '../utils';
 
@@ -104,7 +104,7 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
 ): IUseBlock<T, P> {
   // 初始化状态 - 向 Sketch 注册之后标示为 true
   // const editor = useEditor();
-  const store = useContext<ISketchStoreContext>(SketchContext);
+  const store = useContext<IReactComponentStoreContext>(ReactComponentContext);
   // const initialized = useRef(false);
   // const emitter = useRef<EventEmitter>(new EventEmitter());
   // 创建 ref 用于生成定位框指向元素的位置
@@ -256,6 +256,9 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
   // }, [block.current, disabled]);
 
   const loadBlockRef = useCallback(async (ref: any) => {
+    if (!ref) {
+      return;
+    }
     if (ref.hasOwnProperty('current')) {
       if (!ref.current) {
         await sleep(100);
@@ -361,8 +364,6 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
     const unsubscribe = store.subscribe(checkForUpdates);
     return unsubscribe;
   }, []);
-
-  console.log('key = ', key);
 
   return (cache.current.result = [
     {

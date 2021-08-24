@@ -1,4 +1,4 @@
-import { IBlockState, IUpdateBlockData, SketchAction } from '../typings';
+import { IBlockState, IUpdateBlockData, ReactComponentAction } from '../typings';
 
 // const defaultState: IBlockState = {
 //   version: 0,
@@ -24,7 +24,7 @@ const merge = (props: any[], newProps: any[]) => {
   ];
 };
 
-export default function reducer(state: IBlockState, action: SketchAction): IBlockState {
+export default function reducer(state: IBlockState, action: ReactComponentAction): IBlockState {
   // const { stack } = state || {};
   // if (action.type === ProjectActionType.ChangeCase && action.payload.type === 'component') {
   //   return {
@@ -34,7 +34,7 @@ export default function reducer(state: IBlockState, action: SketchAction): IBloc
   //     blocks: merge(state.blocks, action.payload.data.props || []),
   //   };
   // }
-  console.log('action:', state, action);
+  // console.log('action:', state, action);
   switch (action.type) {
     case 'UpdateBlockMoreProps':
       return {

@@ -1,19 +1,23 @@
 import React, { useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { useSketch } from './SketchContext';
 import {
   EqualityFn,
-  ISketchState,
-  ISketchStoreContext,
+  IReactComponentState,
+  IReactComponentStoreContext,
   Selector,
-  SketchProviderProps,
+  ReactComponentProviderProps,
   SubscribeCallback,
 } from '../typings';
 
 import reducers from './reducer';
+import { generateUUID } from '../utils';
 
-export const SketchContext = React.createContext<ISketchStoreContext>([] as any);
+export const ReactComponentContext = React.createContext<IReactComponentStoreContext>([] as any);
 
-function useStore(): ISketchStoreContext {
-  const [state, dispatch] = useReducer<React.ReducerWithoutAction<ISketchState>>(reducers as any, {
+function useStore(): IReactComponentStoreContext {
+  const sketch = useSketch();
+  const [COMPONENT_ID] = useState(generateUUID());
+  const [state, dispatch] = useReducer<React.ReducerWithoutAction<IReactComponentState>>(reducers as any, {
     blocks: [],
   });
   const [listeners] = useState<SubscribeCallback[]>([]);
@@ -26,12 +30,9 @@ function useStore(): ISketchStoreContext {
   };
   const handleSubscribe = useCallback((callback: SubscribeCallback) => {
     listeners.unshift(callback);
-    console.log('listeners subscribe:', listeners.length);
     return handleUnsubscribe(callback);
   }, []);
-  // TODO 后期需要优化，解决由于 hover 导致的频繁触发
   const handleDispatchSubscribe = useCallback(() => {
-    console.log('listeners:', listeners.length);
     for (const listener of listeners) {
       listener();
     }
@@ -46,11 +47,12 @@ function useStore(): ISketchStoreContext {
     store.getState = () => state;
     handleDispatchSubscribe();
   }, [state]);
+  useEffect(() => sketch.add({ id: COMPONENT_ID, store }), []);
   return store;
 }
 
 export function useDispatch() {
-  const store = useContext<ISketchStoreContext>(SketchContext);
+  const store = useContext<IReactComponentStoreContext>(ReactComponentContext);
   return store.dispatch;
 }
 
@@ -60,7 +62,7 @@ export function useSelector<Selected>(
   selector: Selector<Selected>,
   equalityFn: EqualityFn<Selected> = defaultEqualityFn
 ) {
-  const store = useContext<ISketchStoreContext>(SketchContext);
+  const store = useContext<IReactComponentStoreContext>(ReactComponentContext);
   const [, forceRender] = useReducer((s) => s + 1, 0);
   const latestSelectedState = useRef<Selected>();
   const selectedState = selector(store.getState());
@@ -81,7 +83,7 @@ export function useSelector<Selected>(
   return selectedState;
 }
 
-export default function SketchProvider(props: SketchProviderProps) {
+export default function ReactComponentProvider(props: ReactComponentProviderProps) {
   const { children, version, value } = props;
   const store = useStore();
   //   const { data } = value || {};
@@ -113,5 +115,7 @@ export default function SketchProvider(props: SketchProviderProps) {
   //       dispatch({ type: ActionType.UpdateBlockMoreProps, payload: data.props });
   //     }
   //   }, [data]);
-  return useMemo(() => <SketchContext.Provider value={store}>{children}</SketchContext.Provider>, [version]);
+  return useMemo(() => <ReactComponentContext.Provider value={store}>{children}</ReactComponentContext.Provider>, [
+    version,
+  ]);
 }

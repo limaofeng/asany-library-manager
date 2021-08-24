@@ -253,7 +253,7 @@ export interface ComponentMetadata {
 
 export const METADATA_KEY_COMPONENTS = '_COMPONENTS';
 
-export interface ISketchState {
+export interface IReactComponentState {
   blocks: IBlockData[];
 }
 
@@ -261,7 +261,7 @@ type UnsubscribeFunc = () => void;
 
 type SubscribeFunc = (callback: SubscribeCallback) => UnsubscribeFunc;
 
-export type SketchActionType =
+export type ReactComponentActionType =
   /**
    * 注册区块
    */
@@ -299,20 +299,20 @@ export type SketchActionType =
    */
   | 'UpdateBlockCustomizer';
 
-export interface SketchAction {
-  type: SketchActionType;
+export interface ReactComponentAction {
+  type: ReactComponentActionType;
   payload?: any;
 }
 
-export type DispatchWithoutAction = (action: SketchAction) => void;
+export type DispatchWithoutAction = (action: ReactComponentAction) => void;
 
-export type ISketchStoreContext = {
-  getState: () => ISketchState;
+export type IReactComponentStoreContext = {
+  getState: () => IReactComponentState;
   subscribe: SubscribeFunc;
   dispatch: DispatchWithoutAction;
 };
 
-export interface SketchProviderProps {
+export interface ReactComponentProviderProps {
   children: JSX.Element;
   value: IBlockData<any>[];
   version?: number;
@@ -349,7 +349,7 @@ export interface IUpdateBlockData {
   customizer: any;
 }
 
-export type Selector<Selected> = (state: ISketchState) => Selected;
+export type Selector<Selected> = (state: IReactComponentState) => Selected;
 export type EqualityFn<Selected> = (theNew: Selected, latest: Selected) => boolean;
 
 export interface IBlockDataProps {
