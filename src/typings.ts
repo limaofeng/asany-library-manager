@@ -1,4 +1,4 @@
-import { ComponentType, CSSProperties, DependencyList, FC, MouseEventHandler } from 'react';
+import { ComponentType, DependencyList, FC } from 'react';
 
 export interface ReactComponent {
   [key: string]: React.ReactElement | ReactComponent | any;
@@ -358,25 +358,25 @@ export interface IBlockDataProps {
 
 export interface IBlockOptions<T> extends IBlockData<T> {}
 
-export interface IBlockProviderProps {
+export interface IBlockProviderProps<P> {
   ref?: any;
-  children?: any;
-  onClick?: MouseEventHandler<HTMLDivElement>;
   clickable?: boolean;
-  style?: CSSProperties;
-  className?: string;
+  tag?: string | ComponentType<P>;
   deps?: DependencyList | undefined;
+  children: React.ReactNode;
 }
 
 export type UpdateFunc<T> = (props: T | string, value?: any) => void;
 
-export interface IUseBlockState<T> extends IBlockData<T> {
+export interface IUseBlockState<T, P = DivProvider> extends IBlockData<T> {
   onClick: (e?: React.MouseEvent) => void;
   update: UpdateFunc<T>;
   props: T;
-  Provider: React.ComponentType<IBlockProviderProps>;
+  Provider: React.ComponentType<IBlockProviderProps<P> & P>;
 }
+
+export type DivProvider = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export type RefCallback = (ref: any) => any;
 
-// export type IUseBlock<T> = [IUseBlockState<T>, RefCallback];
+export type IUseBlock<T, P = DivProvider> = [IUseBlockState<T, P>, RefCallback];

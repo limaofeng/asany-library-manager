@@ -1,9 +1,12 @@
-import React, { useEffect, useMemo, useReducer, useRef } from 'react';
+import { EventEmitter } from 'events';
+import React, { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
 
 import SketchProvider from '../sketch/SketchProvider';
 import { IComponentDefinition } from '../typings';
-import { generateUUID, useDeepCompareEffect } from '../utils';
+import { useDeepCompareEffect } from '../utils';
 import useComponent from './useComponent';
+
+const EVENT_SKETCH_PROPS_CHANGE = 'EVENT_SKETCH_PROPS_CHANGE';
 
 interface IOptions {
   id: string;
@@ -14,37 +17,43 @@ interface UseSketchState {
   props: any[];
 }
 
+function createSketchComponent(state: React.RefObject<UseSketchState>, emitter: EventEmitter) {
+  return function () {
+    const [version, forceRender] = useReducer((s) => s + 1, 0);
+
+    const { component, props } = state.current!;
+
+    useEffect(() => {
+      emitter.addListener(EVENT_SKETCH_PROPS_CHANGE, forceRender);
+      return () => {
+        emitter.removeListener(EVENT_SKETCH_PROPS_CHANGE, forceRender);
+      };
+    }, []);
+
+    return (
+      <SketchProvider value={props} version={version}>
+        {React.createElement(component?.component!)}
+      </SketchProvider>
+    );
+  };
+}
+
 export default function useSketch(id: string, injectProps: any[] = [], _?: IOptions) {
-  // const key = useRef(options?.id || generateUUID());
   const component = useComponent(id);
+  const emitter = useMemo<EventEmitter>(() => new EventEmitter(), []);
   const state = useRef<UseSketchState>({ component, props: injectProps });
+  const reactComponent = useRef(createSketchComponent(state, emitter));
 
-  const forceRender = useRef<React.DispatchWithoutAction>();
-
-  // const reactComponent = useMemo(() => {
-  //   return function () {
-  //     const [version, trigger] = useReducer((s) => s + 1, 0);
-
-  //     const { component, props } = state.current;
-
-  //     useEffect(() => {
-  //       // forceRender.current = trigger;
-  //     }, []);
-
-  //     return (
-  //       <SketchProvider value={props} version={version}>
-  //         {React.createElement(component?.component!)}
-  //       </SketchProvider>
-  //     );
-  //   };
-  // }, []);
+  const forceRender = useCallback(() => {
+    emitter.emit(EVENT_SKETCH_PROPS_CHANGE);
+  }, []);
 
   useEffect(() => {
     if (state.current.component === component) {
       return;
     }
     state.current.component = component;
-    forceRender.current!();
+    forceRender();
   }, [component]);
 
   useDeepCompareEffect(() => {
@@ -52,37 +61,8 @@ export default function useSketch(id: string, injectProps: any[] = [], _?: IOpti
       return;
     }
     state.current.props = injectProps;
-    forceRender.current!();
+    forceRender();
   }, [injectProps]);
 
-  return () => <div>123</div>;
-
-  // const reactComponent = useMemo(() => {
-  //   return function () {};
-  // }, [reactComponent]);
-
-  // useEffect(() => {
-  //   if (!options?.id || options.id == key.current) {
-  //     return;
-  //   }
-  //   key.current = options.id;
-  //   forceRender();
-  // }, [options?.id]);
-
-  // useDeepCompareEffect(() => {
-  //   emitter.current.emit(EVENT_SKETCH_PROPS_CHANGE, sketchProps);
-  // }, [sketchProps]);
-
-  // useEffect(() => {
-  //   if (!component) {
-  //     return;
-  //   }
-  //   const { component: Component, ...info } = component;
-  //   const ReactComponent: any = createSketchReactComponent(key.current, Component, sketchProps, emitter);
-  //   ReactComponent.info = info;
-  //   AsanyComponent.current = ReactComponent;
-  //   forceRender();
-  // }, [component, key.current]);
-
-  // return AsanyComponent.current;
+  return reactComponent.current;
 }

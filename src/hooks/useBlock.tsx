@@ -1,27 +1,15 @@
 import classnames from 'classnames';
-import { EventEmitter } from 'events';
 import { isEqual } from 'lodash-es';
-import React, {
-  DependencyList,
-  MouseEventHandler,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from 'react';
-import { CSSProperties } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 
 import { SketchContext, useDispatch } from '../sketch/SketchProvider';
 import {
-  IBlockData,
   IBlockDataProps,
   IBlockOptions,
-  IComponentProperty,
+  IBlockProviderProps,
   ISketchStoreContext,
   IUseBlock,
+  DivProvider,
 } from '../typings';
 import { sleep } from '../utils';
 
@@ -41,44 +29,40 @@ export interface IBlockContext {
 }
 
 export const BlockContext = React.createContext<IBlockContext>({
-  parentBlockKey: '',
+  parentBlockKey: 'root',
 });
 
 // TODO 会导致不能刷新 / 或者频繁刷新
-// const buildBlockProvider = (blockKey: string, cache: React.RefObject<IUseBlock<any>>) => {
-//   const keys = blockKey.split('/');
-//   const lastKey = keys[keys.length - 1];
-//   return React.forwardRef(
-//     ({ style, children, deps, clickable, onClick: exitOnClick, className, ...props }: IBlockProviderProps, ref) => {
-//       const disabled = true; // TODO: useSelector((state) => !!(state.mode === 'VIEW' || !state.features.block));
-//       const context = useRef({ parentBlockKey: blockKey });
-//       return useMemo(
-//         () => {
-//           const [{ onClick }, blockRef] = cache.current!;
-//           const handleClick = exitOnClick || onClick;
-//           return (
-//             <BlockContext.Provider value={context.current}>
-//               {(clickable || exitOnClick) && !disabled ? (
-//                 <div
-//                   {...props}
-//                   className={classnames(`block-${lastKey}-provider`, className)}
-//                   onClick={handleClick}
-//                   style={style}
-//                   ref={ref ? blockRef(ref) : blockRef}
-//                 >
-//                   {children}
-//                 </div>
-//               ) : (
-//                 children
-//               )}
-//             </BlockContext.Provider>
-//           );
-//         },
-//         deps ? [disabled, className, style, ...deps] : undefined
-//       );
-//     }
-//   );
-// };
+function buildBlockProvider(blockKey: string, cache: React.RefObject<UseBlockCache<any>>): React.ComponentType<any> {
+  const keys = blockKey.split('/');
+  const lastKey = keys[keys.length - 1];
+  return React.forwardRef(
+    (
+      { tag, clickable, children, onClick: handleClick, deps, ...props }: IBlockProviderProps<any> & DivProvider,
+      ref
+    ) => {
+      const context = useRef({ parentBlockKey: blockKey });
+      const [{ onClick }, blockRef] = cache.current!.result;
+      return useMemo(() => {
+        return (
+          <BlockContext.Provider value={context.current}>
+            {React.createElement(
+              tag || 'div',
+              {
+                ...props,
+                onClick: handleClick || onClick,
+                className: classnames(`block-provider`, props.className),
+                'data-block-key': lastKey,
+                ref: ref ? blockRef(ref) : blockRef,
+              },
+              children
+            )}
+          </BlockContext.Provider>
+        );
+      }, deps);
+    }
+  );
+}
 
 // function initialize(fields: IComponentProperty[], props: any = {}) {
 //   for (const field of fields) {
@@ -101,9 +85,6 @@ export const BlockContext = React.createContext<IBlockContext>({
 export function useBlockContext(key: string) {
   const context = useContext(BlockContext);
   const [state] = useState(() => {
-    // if (key === father) {
-    //   return { key };
-    // }
     return {
       parentBlockKey: context.parentBlockKey,
       key: context.parentBlockKey ? context.parentBlockKey + '/' + key : key,
@@ -112,22 +93,31 @@ export function useBlockContext(key: string) {
   return state;
 }
 
-export default function useBlock<T extends IBlockDataProps>(origin: IBlockOptions<T>): IUseBlock<T> {
+type UseBlockCache<T> = {
+  key: string;
+  options: IBlockOptions<T>;
+  result: IUseBlock<T>;
+};
+
+export default function useBlock<P = DivProvider, T extends IBlockDataProps = any>(
+  options: IBlockOptions<T>
+): IUseBlock<T, P> {
   // 初始化状态 - 向 Sketch 注册之后标示为 true
   // const editor = useEditor();
   const store = useContext<ISketchStoreContext>(SketchContext);
-  const initialized = useRef(false);
-  const emitter = useRef<EventEmitter>(new EventEmitter());
-  // const cacheResult = useRef<IUseBlock<T>>([] as any);
+  // const initialized = useRef(false);
+  // const emitter = useRef<EventEmitter>(new EventEmitter());
   // 创建 ref 用于生成定位框指向元素的位置
   const block = useRef<HTMLDivElement>();
   // 获取 block 的 key 即原来的 parentBlockKey + key
-  const { key } = useBlockContext(origin.key);
+  const { key } = useBlockContext(options.key);
+  const cache = useRef<UseBlockCache<T>>({ key, options, result: [] as any });
+  const latestProps = useRef<any>(options.props);
   // 使用生成的 key 组合新的 data 数据
-  const dataRef = useRef<IBlockOptions<T>>({ ...origin, key });
-  const data = dataRef.current;
+  // const dataRef = useRef<IBlockOptions<T>>({ ...options, key });
+  // const data = dataRef.current;
   // 创建 BlockProvider，组合 useBlockContext 使用
-  // const Provider = useRef(buildBlockProvider(data.key, cacheResult));
+  const Provider = useMemo(() => buildBlockProvider(key, cache), []);
   // 通过 customizer.fields 及 data.props 生成配置默认数据
   // const props = useRef<any>(initialize(data.customizer?.fields || [], { ...data.props }));
   // 是否显示选框
@@ -142,22 +132,23 @@ export default function useBlock<T extends IBlockDataProps>(origin: IBlockOption
   // const values = useSelector((state) => state.blocks.find(({ key: itemKey }) => itemKey === data.key)?.props || data.props, isEqual);
 
   const handleChange = useCallback((props: T | string, value: string) => {
-    if (!initialized.current) {
-      return;
-    }
+    const { key } = cache.current;
+    // if (!initialized.current) {
+    //   return;
+    // }
     if (value) {
       dispatch({
         type: 'UpdateBlockProps',
         payload: {
-          key: data.key,
-          props: { ...dataRef.current.props, [props as string]: value },
+          key,
+          props: { ...latestProps.current, [props as string]: value },
         },
       });
     } else {
       dispatch({
         type: 'UpdateBlockProps',
         payload: {
-          key: data.key,
+          key: key,
           props,
         },
       });
@@ -218,31 +209,25 @@ export default function useBlock<T extends IBlockDataProps>(origin: IBlockOption
 
   // 向 workspace 中注册当前 block
   useEffect(() => {
-    if (disabled) {
-      initialized.current = true;
-      return;
-    }
-    (data as any).onChange = handleChange;
-    data.customizer = data.customizer || { fields: [] };
+    const { key, options } = cache.current;
     dispatch({
       type: 'RegistrationBlock',
       payload: {
-        ...data,
+        ...options,
+        customizer: options.customizer || { fields: [] },
         element: block,
-        emitter: emitter.current,
         update: handleChange,
         click: handleClick,
-        // render: data.options?.render,
+        key,
       },
     });
-    initialized.current = true;
     return () => {
       dispatch({
         type: 'UninstallBlock',
-        payload: data,
+        payload: { key },
       });
     };
-  }, [disabled]);
+  }, []);
 
   // 为了解决，resize 时，选框与 click 事件冲突的问题。
   // TODO 处理鼠标移入/移出时的选框
@@ -281,7 +266,6 @@ export default function useBlock<T extends IBlockDataProps>(origin: IBlockOption
         return;
       }
       block.current = ref.current;
-      // buildMouseEffect();
     } else {
       block.current = ref;
     }
@@ -289,9 +273,6 @@ export default function useBlock<T extends IBlockDataProps>(origin: IBlockOption
 
   // 将 ref 包装为单独的函数
   const refCallback = useCallback((ref: any) => {
-    if (!ref) {
-      return;
-    }
     loadBlockRef(ref);
     return ref;
   }, []);
@@ -366,10 +347,9 @@ export default function useBlock<T extends IBlockDataProps>(origin: IBlockOption
   //   };
   // }, []);
 
-  const latestProps = useRef<any>(data.props);
-
   const checkForUpdates = useCallback(() => {
-    const newProps = store.getState().blocks.find(({ key: itemKey }) => itemKey === data.key)?.props || data.props;
+    const { key } = cache.current;
+    const newProps = store.getState().blocks.find(({ key: itemKey }) => itemKey === key)?.props || latestProps.current;
     if (isEqual(newProps, latestProps.current!)) {
       return;
     }
@@ -382,18 +362,18 @@ export default function useBlock<T extends IBlockDataProps>(origin: IBlockOption
     return unsubscribe;
   }, []);
 
-  const values = latestProps.current;
+  console.log('key = ', key);
 
-  console.log('values', values, data.props);
-
-  return [
+  return (cache.current.result = [
     {
-      ...data,
+      ...cache.current.options,
+      key,
       onClick: handleClick,
       update: handleChange,
       props: latestProps.current,
-      Provider: {} as any,
+      Provider,
+      version,
     },
     refCallback,
-  ];
+  ]);
 }

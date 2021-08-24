@@ -36,13 +36,12 @@ export default function reducer(state: IBlockState, action: SketchAction): IBloc
   // }
   console.log('action:', state, action);
   switch (action.type) {
-    //   case BlockActionType.UpdateBlockMoreProps: {
-    //     return {
-    //       ...state,
-    //       version: state.version + 1,
-    //       blocks: merge(state.blocks, action.payload || []),
-    //     };
-    //   }
+    case 'UpdateBlockMoreProps':
+      return {
+        ...state,
+        version: state.version + 1,
+        blocks: merge(state.blocks, action.payload || []),
+      };
     case 'RegistrationBlock':
       if (state.blocks.some(({ key }) => key === action.payload.key)) {
         return {

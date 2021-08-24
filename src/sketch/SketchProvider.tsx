@@ -4,7 +4,6 @@ import {
   ISketchState,
   ISketchStoreContext,
   Selector,
-  SketchAction,
   SketchProviderProps,
   SubscribeCallback,
 } from '../typings';

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { useBlock } from './hooks';
-import { ComponentPropertyType } from './typings';
+import { useBlock } from '../src/hooks';
+import { ComponentPropertyType } from '../src/typings';
 
 function Showme() {
-  const [{ props, update }] = useBlock({
+  const [{ key, props, update, Provider }] = useBlock<ACProps>({
     key: 'xxx',
     icon: '',
     title: '',
@@ -29,7 +29,21 @@ function Showme() {
 
   console.log('>>>>>', props.title);
 
-  return <div>Show me your code: {props.title} </div>;
+  return (
+    <Provider clickable={true} name="" tag={AC}>
+      Show me your code: {props.title} <br /> key = {key}
+    </Provider>
+  );
 }
+
+interface ACProps {
+  name: string;
+  children: React.ReactNode;
+}
+
+const AC = React.forwardRef(function (p: ACProps, ref: any) {
+  console.log('ref => ', ref);
+  return <span ref={ref}>{p.children}</span>;
+});
 
 export default Showme;

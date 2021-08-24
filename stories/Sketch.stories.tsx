@@ -10,7 +10,7 @@ import Sunmao, {
   ComponentPropertyType,
 } from '../src';
 
-import Showme from '../src/Showme';
+import Showme from './Showme';
 import { useEffect } from '@storybook/addons';
 import { useDispatch } from '../src/sketch/SketchProvider';
 
