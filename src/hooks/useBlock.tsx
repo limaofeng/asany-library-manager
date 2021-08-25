@@ -1,77 +1,17 @@
-import classnames from 'classnames';
 import { isEqual } from 'lodash-es';
-import React, { useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useReducer, useRef } from 'react';
 import { useSketch } from '../sketch';
+import { buildBlockProvider, useBlockContext } from '../sketch/BlockContext';
 
 import { ReactComponentContext, useDispatch } from '../sketch/ReactComponentProvider';
 import {
   IBlockDataProps,
   IBlockOptions,
-  IBlockProviderProps,
   IUseBlock,
   DivProvider,
   IReactComponentStoreContext,
+  UseBlockCache,
 } from '../typings';
-
-export interface IBlockContext {
-  parentBlockKey?: string;
-}
-
-export const BlockContext = React.createContext<IBlockContext>({});
-
-// TODO 会导致不能刷新 / 或者频繁刷新
-function buildBlockProvider(
-  blockKey: string,
-  cache: React.RefObject<UseBlockCache<any, any>>
-): React.ComponentType<any> {
-  return React.forwardRef(
-    (
-      { tag, clickable, children, onClick: handleClick, deps, ...props }: IBlockProviderProps<any> & DivProvider,
-      ref
-    ) => {
-      const context = useRef({ parentBlockKey: blockKey });
-      const {
-        id,
-        result: { onClick },
-      } = cache.current!;
-      return useMemo(() => {
-        return (
-          <BlockContext.Provider value={context.current}>
-            {React.createElement(
-              tag || 'div',
-              {
-                ...props,
-                onClick: handleClick || onClick,
-                className: classnames(`block-provider`, props.className),
-                ref,
-                id,
-              },
-              children
-            )}
-          </BlockContext.Provider>
-        );
-      }, deps);
-    }
-  );
-}
-
-export function useBlockContext(key: string) {
-  const context = useContext(BlockContext);
-  const [state] = useState(() => {
-    return {
-      parentBlockKey: context.parentBlockKey,
-      key: context.parentBlockKey ? context.parentBlockKey + '/' + key : key,
-    };
-  });
-  return state;
-}
-
-type UseBlockCache<T, P> = {
-  id: string;
-  key: string;
-  options: IBlockOptions<T>;
-  result: IUseBlock<T, P>;
-};
 
 export default function useBlock<P = DivProvider, T extends IBlockDataProps = any>(
   options: IBlockOptions<T>

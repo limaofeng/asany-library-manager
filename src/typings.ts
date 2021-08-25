@@ -385,6 +385,13 @@ export interface IUseBlockState<T, P = DivProvider> extends IBlockData<T> {
   Provider: React.ComponentType<IBlockProviderProps<P> & P>;
 }
 
+export type UseBlockCache<T, P> = {
+  id: string;
+  key: string;
+  options: IBlockOptions<T>;
+  result: IUseBlock<T, P>;
+};
+
 export type DivProvider = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export type IUseBlock<T, P = DivProvider> = IUseBlockState<T, P>;

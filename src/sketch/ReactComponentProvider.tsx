@@ -15,6 +15,7 @@ import reducers from './reducer';
 import { generateUUID, useDeepCompareEffect } from '../utils';
 import { isEqual } from 'lodash-es';
 import { useInternalSelector } from './utils';
+import { BlockRootProvider } from './BlockContext';
 
 export const ReactComponentContext = React.createContext<IReactComponentStoreContext>([] as any);
 
@@ -86,7 +87,12 @@ export default function ReactComponentProvider(props: ReactComponentProviderProp
       payload: value,
     });
   }, [value]);
-  return useMemo(() => <ReactComponentContext.Provider value={store}>{children}</ReactComponentContext.Provider>, [
-    version,
-  ]);
+  return useMemo(
+    () => (
+      <ReactComponentContext.Provider value={store}>
+        <BlockRootProvider>{children}</BlockRootProvider>
+      </ReactComponentContext.Provider>
+    ),
+    [version]
+  );
 }
