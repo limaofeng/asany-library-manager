@@ -13,24 +13,11 @@ import {
   IReactComponentStoreContext,
 } from '../typings';
 
-// import { OnResize, OnResizeEnd, OnResizeStart } from 'react-moveable';
-
-// import BlockObserver from '../components/Observer';
-// import { father } from '../typings';
-// import { dispatchWindowResize, sleep } from '../utils';
-// import useSelector from './useSelector';
-
-// import { IComponentProperty } from '../../library-manager/typings';
-// import type { IBlockData, IBlockDataProps, IBlockOptions, IComponentProperty, ICustomizer } from '../typings';
-// import { BlockActionType, WorkspaceActionType } from '../reducers/actions';
-// import { MoveableOptions } from 'moveable';
 export interface IBlockContext {
-  parentBlockKey: string;
+  parentBlockKey?: string;
 }
 
-export const BlockContext = React.createContext<IBlockContext>({
-  parentBlockKey: 'root',
-});
+export const BlockContext = React.createContext<IBlockContext>({});
 
 // TODO 会导致不能刷新 / 或者频繁刷新
 function buildBlockProvider(
@@ -68,24 +55,6 @@ function buildBlockProvider(
   );
 }
 
-// function initialize(fields: IComponentProperty[], props: any = {}) {
-//   for (const field of fields) {
-//     const { init } = field.hooks || {};
-//     if (!init) {
-//       continue;
-//     }
-//     props[field.name] = init(props[field.name]);
-//   }
-//   return props;
-// }
-
-// interface BlockListenerOptions {
-//   resizable: boolean;
-//   draggable: boolean;
-//   // client: ApolloClient<any>;
-//   onChange: UpdateFunc<any>;
-// }
-
 export function useBlockContext(key: string) {
   const context = useContext(BlockContext);
   const [state] = useState(() => {
@@ -111,37 +80,21 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
   // const editor = useEditor();
   const sketch = useSketch();
   const store = useContext<IReactComponentStoreContext>(ReactComponentContext);
-  // const initialized = useRef(false);
-  // const emitter = useRef<EventEmitter>(new EventEmitter());
-  // 创建 ref 用于生成定位框指向元素的位置
-  // const block = useRef<HTMLDivElement>();
   // 获取 block 的 key 即原来的 parentBlockKey + key
   const { key } = useBlockContext(options.key);
   const cache = useRef<UseBlockCache<T, P>>({ id: store.id + ':' + key, key, options, result: [] as any });
   const latestProps = useRef<any>(options.props);
   // 使用生成的 key 组合新的 data 数据
-  // const dataRef = useRef<IBlockOptions<T>>({ ...options, key });
-  // const data = dataRef.current;
   // 创建 BlockProvider，组合 useBlockContext 使用
   const Provider = useMemo(() => buildBlockProvider(key, cache), []);
   // 通过 customizer.fields 及 data.props 生成配置默认数据
-  // const props = useRef<any>(initialize(data.customizer?.fields || [], { ...data.props }));
-  // 是否显示选框
-  // const isMoveable = useRef<boolean>(false);
-  // const handleScenaClick = useSelector((state) => state.ui.scena.onClick);
 
   const dispatch = useDispatch();
 
-  // const client = useApolloClient();
   const [version, forceRender] = useReducer((s) => s + 1, 0);
-  // const disabled = false; // TODO: useSelector((state) => state.mode === 'VIEW' || !state.features.block);
-  // const values = useSelector((state) => state.blocks.find(({ key: itemKey }) => itemKey === data.key)?.props || data.props, isEqual);
 
   const handleChange = useCallback((props: T | string, value: string) => {
     const { key } = cache.current;
-    // if (!initialized.current) {
-    //   return;
-    // }
     if (value) {
       dispatch({
         type: 'UpdateBlockProps',
@@ -161,59 +114,11 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
     }
   }, []);
 
-  // const handleMouseEnter = useCallback(() => {
-  //   dispatch({
-  //     type: 'PushBlock',
-  //     payload: { key: data.key },
-  //   });
-  // }, []);
-
-  // const handleMouseLeave = useCallback(() => {
-  //   dispatch({
-  //     type: 'PopBlock',
-  //     payload: { key: data.key },
-  //   });
-  // }, []);
-
-  // const handleMouseDown = useCallback((e: MouseEvent) => {
-  //   const className = (e.target as any).className;
-  //   if (!className || typeof className !== 'string') {
-  //     isMoveable.current = false;
-  //   } else {
-  //     isMoveable.current = className.includes('moveable-control');
-  //   }
-  // }, []);
-
-  const handleClick = useCallback(
-    (e?: React.MouseEvent) => {
-      const { id } = cache.current;
-      // if (disabled) {
-      //   return;
-      // }
-      e && e.stopPropagation();
-      sketch.trigger('block-click', id);
-      // if (isMoveable.current) {
-      //   return;
-      // }
-      // TODO 如果为 moveable 事件，不触发 SelectedBlock 逻辑
-      // if (e && (e.target as any).className.includes && (e.target as any).className.includes('moveable-control')) {
-      //   return;
-      // }
-      // TODO: dispatch
-      // handleScenaClick &&
-      //   handleScenaClick(editor, {
-      //     ...data,
-      //     onClick: handleClick,
-      //     update: handleChange,
-      //     props: props.current,
-      //     Provider: Provider.current,
-      //   });
-      // dispatch({ type: WorkspaceActionType.SelectedBlock, payload: data });
-    },
-    [
-      /*handleScenaClick, disabled*/
-    ]
-  );
+  const handleClick = useCallback((e?: React.MouseEvent) => {
+    const { id } = cache.current;
+    e && e.stopPropagation();
+    sketch.trigger('block-click', id);
+  }, []);
 
   // 向 workspace 中注册当前 block
   useEffect(() => {
@@ -237,68 +142,28 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
     };
   }, []);
 
-  // 为了解决，resize 时，选框与 click 事件冲突的问题。
-  // TODO 处理鼠标移入/移出时的选框
-  // const buildMouseEffect = useCallback(() => {
-  //   const blockRef = block.current!;
-  //   if (!blockRef || disabled) {
-  //     return;
-  //   }
-  //   blockRef.addEventListener('mouseenter', handleMouseEnter);
-  //   blockRef.addEventListener('mouseleave', handleMouseLeave);
-  //   blockRef.addEventListener('mousedown', handleMouseDown);
-  // }, []);
-  // const unbuildMouseEffect = useCallback(() => {
-  //   const blockRef = block.current!;
-  //   if (!blockRef || disabled) {
-  //     return;
-  //   }
-  //   blockRef.removeEventListener('mouseenter', handleMouseEnter);
-  //   blockRef.removeEventListener('mouseleave', handleMouseLeave);
-  //   blockRef.removeEventListener('mousedown', handleMouseDown);
-  // }, []);
+  const handleMouseEnter = useCallback(() => {
+    const { id } = cache.current;
+    sketch.trigger('block-mouse-enter', id);
+  }, []);
 
-  // useEffect(() => {
-  //   buildMouseEffect();
-  //   return unbuildMouseEffect;
-  // }, [block.current, disabled]);
+  const handleMouseLeave = useCallback(() => {
+    const { id } = cache.current;
+    sketch.trigger('block-mouse-leave', id);
+  }, []);
 
-  // const loadBlockRef = useCallback(async (ref: any) => {
-  //   if (!ref) {
-  //     return;
-  //   }
-  //   if (ref.hasOwnProperty('current')) {
-  //     if (!ref.current) {
-  //       await sleep(100);
-  //       await loadBlockRef(ref);
-  //       return;
-  //     }
-  //     if (block.current == ref.current) {
-  //       return;
-  //     }
-  //     block.current = ref.current;
-  //   } else {
-  //     block.current = ref;
-  //   }
-  // }, []);
-
-  // 将 ref 包装为单独的函数
-  // const refCallback = useCallback((ref: any) => {
-  //   loadBlockRef(ref);
-  //   return ref;
-  // }, []);
-
-  // 通过 data.customizer 为 block 添加监听处理 hook 逻辑
-  // useEffect(() => {
-  //   buildListeners(observer.current, data.customizer!, props.current, forceRender, {
-  //     // client,
-  //     onChange: handleChange,
-  //     resizable: false, //!!data.options?.resizable,
-  //     draggable: false, //!!data.options?.draggable,
-  //   });
-  //   observer.current.observe(values);
-  //   forceRender();
-  // }, []);
+  useEffect(() => {
+    const ele = document.getElementById(cache.current.id);
+    if (!ele) {
+      return console.warn('未发现' + cache.current.key + ', 对应的 HTML 元素');
+    }
+    ele.addEventListener('mouseenter', handleMouseEnter);
+    ele.addEventListener('mouseleave', handleMouseLeave);
+    return () => {
+      ele.removeEventListener('mouseenter', handleMouseEnter);
+      ele.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
 
   // useEffect(() => {
   //   if (!data.customizer?.dynamic) {
@@ -320,9 +185,6 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
   //   // TODO: 可能会存在 318 行类似的 BUG
   // }, [origin.customizer]);
 
-  // 触发监听
-  // observer.current.observe(values);
-
   // 值改变时，触发一次 resize 操作
   // useEffect(() => {
   //   dispatchWindowResize();
@@ -333,30 +195,6 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
   // useEffect(() => {
   //   setTimeout(dispatchWindowResize, 60);
   // }, [[height, width, top, left].join('-')]);
-
-  // const handleResizeStart = useCallback((e: OnResizeStart) => {
-  //   const onResizeStart = dataRef.current.options?.onResizeStart;
-  //   onResizeStart && onResizeStart(e);
-  // }, []);
-  // const handleResize = useCallback((e: OnResize) => {
-  //   const onResize = dataRef.current.options?.onResize;
-  //   onResize && onResize(e);
-  // }, []);
-  // const handleResizeStop = useCallback((e: OnResizeEnd) => {
-  //   const onResizeStop = dataRef.current.options?.onResizeStop;
-  //   onResizeStop && onResizeStop(e);
-  // }, []);
-
-  // useEffect(() => {
-  //   emitter.current.on('resize.start', handleResizeStart);
-  //   emitter.current.on('resize.resizing', handleResize);
-  //   emitter.current.on('resize.stop', handleResizeStop);
-  //   return () => {
-  //     emitter.current.off('resize.start', handleResizeStart);
-  //     emitter.current.off('resize.resizing', handleResize);
-  //     emitter.current.off('resize.stop', handleResizeStop);
-  //   };
-  // }, []);
 
   const checkForUpdates = useCallback(() => {
     const { key } = cache.current;
@@ -369,8 +207,7 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
   }, []);
 
   useEffect(() => {
-    const unsubscribe = store.subscribe(checkForUpdates);
-    return unsubscribe;
+    return store.subscribe(checkForUpdates);
   }, []);
 
   cache.current.result = useMemo(

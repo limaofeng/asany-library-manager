@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useReducer, useState } from 'react';
 import { useSketch } from './SketchContext';
 import {
   EqualityFn,
@@ -14,6 +14,7 @@ import {
 import reducers from './reducer';
 import { generateUUID, useDeepCompareEffect } from '../utils';
 import { isEqual } from 'lodash-es';
+import { useInternalSelector } from './utils';
 
 export const ReactComponentContext = React.createContext<IReactComponentStoreContext>([] as any);
 
@@ -58,31 +59,6 @@ function useStore(): IReactComponentStoreContext {
 export function useDispatch() {
   const store = useContext<IReactComponentStoreContext>(ReactComponentContext);
   return store.dispatch;
-}
-
-export function useInternalSelector<Selected>(
-  store: IReactComponentStoreContext,
-  selector: Selector<Selected>,
-  equalityFn: EqualityFn<Selected> = defaultEqualityFn
-) {
-  const [, forceRender] = useReducer((s) => s + 1, 0);
-  const latestSelectedState = useRef<Selected>();
-  const selectedState = selector(store.getState());
-  function checkForUpdates() {
-    const newSelectedState = selector(store.getState());
-    if (equalityFn(newSelectedState, latestSelectedState.current!)) {
-      console.log('equalityFn', newSelectedState, latestSelectedState.current!);
-      return;
-    }
-    latestSelectedState.current = newSelectedState;
-    forceRender();
-  }
-  useEffect(() => {
-    const unsubscribe = store.subscribe(checkForUpdates);
-    return unsubscribe;
-  }, []);
-
-  return selectedState;
 }
 
 export function useSelector<Selected>(

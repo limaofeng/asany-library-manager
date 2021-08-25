@@ -2,6 +2,30 @@ import React, { useEffect } from 'react';
 import { useBlock } from '../src/hooks';
 import { ComponentPropertyType } from '../src/typings';
 
+function Second() {
+  const { key, props, update, Provider } = useBlock({
+    key: 'Second',
+    icon: '',
+    title: '',
+    props: {
+      title: 'Second',
+    },
+    customizer: {
+      fields: [
+        {
+          name: 'title',
+          type: ComponentPropertyType.String,
+        },
+      ],
+    },
+  });
+  return (
+    <Provider clickable={true}>
+      Second: {props.title} <br /> key = {key}
+    </Provider>
+  );
+}
+
 function Showme() {
   const { key, props, update, Provider } = useBlock({
     key: 'xxx',
@@ -32,6 +56,7 @@ function Showme() {
   return (
     <Provider clickable={true}>
       Show me your code: {props.title} <br /> key = {key}
+      <Second />
     </Provider>
   );
 }

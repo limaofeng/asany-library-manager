@@ -63,7 +63,6 @@ export default function reducer(state: IBlockState, action: ReactComponentAction
       return {
         ...state,
         version: state.version + 1,
-        activeKey: state.activeKey === action.payload.key ? 'father' : state.activeKey, // TODO: father 是否应该保留
         blocks: state.blocks.filter(({ key }) => key != action.payload.key),
       };
     //   case BlockActionType.PushBlock:

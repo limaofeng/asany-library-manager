@@ -9,7 +9,7 @@ import {
   Selector,
 } from '../typings';
 import { EventEmitter } from 'events';
-import { useInternalSelector } from './ReactComponentProvider';
+import { useInternalSelector } from './utils';
 
 type ReactComponentData = {
   id: string;
@@ -18,7 +18,7 @@ type ReactComponentData = {
 
 type EventCallback = (...params: any) => void;
 
-type SketchEventName = 'block-click';
+type SketchEventName = 'block-click' | 'block-mouse-enter' | 'block-mouse-leave';
 
 class Sketch {
   private emitter = new EventEmitter();
