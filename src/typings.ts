@@ -322,9 +322,7 @@ export interface ReactComponentProviderProps {
 export interface IBlockState {
   version: number;
   definition: IComponentDefinition;
-  activeKey?: string;
   blocks: IBlockData<any>[];
-  stack: string[];
 }
 
 export interface IBlockData<T = any> {
@@ -333,9 +331,15 @@ export interface IBlockData<T = any> {
   icon: string;
   title: string;
   props?: T;
+  update: UpdateFunc<T>;
   customizer?: ICustomizer;
   version?: number;
 }
+
+export type IBlockCoreData = {
+  key: string;
+  props: any;
+};
 
 export interface ICustomizer {
   /**
@@ -356,7 +360,13 @@ export interface IBlockDataProps {
   [key: string]: any;
 }
 
-export interface IBlockOptions<T> extends IBlockData<T> {}
+export interface IBlockOptions<T> {
+  key: string;
+  icon: string;
+  title: string;
+  props?: T;
+  customizer?: ICustomizer;
+}
 
 export interface IBlockProviderProps<P> {
   ref?: any;
@@ -378,3 +388,5 @@ export interface IUseBlockState<T, P = DivProvider> extends IBlockData<T> {
 export type DivProvider = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export type IUseBlock<T, P = DivProvider> = IUseBlockState<T, P>;
+
+export const defaultEqualityFn = (a: any, b: any) => a === b;

@@ -1,6 +1,15 @@
 import React, { useContext, useMemo } from 'react';
-import { IBlockData, IReactComponentStoreContext, IUpdateBlockData } from '../typings';
+import {
+  defaultEqualityFn,
+  EqualityFn,
+  IBlockCoreData,
+  IBlockData,
+  IReactComponentStoreContext,
+  IUpdateBlockData,
+  Selector,
+} from '../typings';
 import { EventEmitter } from 'events';
+import { useInternalSelector } from './ReactComponentProvider';
 
 type ReactComponentData = {
   id: string;
@@ -38,6 +47,11 @@ class Sketch {
     return component?.store.getState().blocks.find((item) => item.key == blkey);
   }
 
+  getComponent(key: string): ReactComponentData | undefined {
+    const [id] = key.split(':');
+    return this.components.get(id);
+  }
+
   updateComponent(id: string, data: IUpdateBlockData[]) {
     const component = this.components.get(id);
     if (!component) {
@@ -63,12 +77,22 @@ class Sketch {
     });
   }
 
-  getComponentData(id: string) {
+  getComponentData(id: string): IBlockCoreData[] {
     const component = this.components.get(id);
     if (!component) {
       throw 'component is null!';
     }
     return component.store.getState().blocks.map(({ key, props }) => ({ key, props }));
+  }
+
+  useSelector(id: string) {
+    const com = this.getComponent(id);
+    if (!com) {
+      throw 'component is null!';
+    }
+    return function <Selected>(selector: Selector<Selected>, equalityFn: EqualityFn<Selected> = defaultEqualityFn) {
+      return useInternalSelector(com.store, selector, equalityFn);
+    };
   }
 }
 

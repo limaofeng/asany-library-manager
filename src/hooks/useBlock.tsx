@@ -377,12 +377,12 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
     () => ({
       ...cache.current.options,
       id: cache.current.id,
-      key,
       onClick: handleClick,
       update: handleChange,
       props: latestProps.current,
       Provider,
       version,
+      key,
     }),
     [latestProps.current, version]
   );

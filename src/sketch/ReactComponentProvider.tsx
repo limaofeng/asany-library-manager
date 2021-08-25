@@ -7,10 +7,13 @@ import {
   Selector,
   ReactComponentProviderProps,
   SubscribeCallback,
+  IBlockData,
+  defaultEqualityFn,
 } from '../typings';
 
 import reducers from './reducer';
-import { generateUUID } from '../utils';
+import { generateUUID, useDeepCompareEffect } from '../utils';
+import { isEqual } from 'lodash-es';
 
 export const ReactComponentContext = React.createContext<IReactComponentStoreContext>([] as any);
 
@@ -57,13 +60,11 @@ export function useDispatch() {
   return store.dispatch;
 }
 
-const defaultEqualityFn = (a: any, b: any) => a === b;
-
-export function useSelector<Selected>(
+export function useInternalSelector<Selected>(
+  store: IReactComponentStoreContext,
   selector: Selector<Selected>,
   equalityFn: EqualityFn<Selected> = defaultEqualityFn
 ) {
-  const store = useContext<IReactComponentStoreContext>(ReactComponentContext);
   const [, forceRender] = useReducer((s) => s + 1, 0);
   const latestSelectedState = useRef<Selected>();
   const selectedState = selector(store.getState());
@@ -84,38 +85,31 @@ export function useSelector<Selected>(
   return selectedState;
 }
 
+export function useSelector<Selected>(
+  selector: Selector<Selected>,
+  equalityFn: EqualityFn<Selected> = defaultEqualityFn
+) {
+  const store = useContext<IReactComponentStoreContext>(ReactComponentContext);
+  return useInternalSelector(store, selector, equalityFn);
+}
+
+function compact(data: IBlockData[]) {
+  return data.map(({ key, props }) => ({ key, props }));
+}
+
 export default function ReactComponentProvider(props: ReactComponentProviderProps) {
   const { children, version, value } = props;
   const store = useStore();
-  //   const { data } = value || {};
-  //   const { dispatch } = store;
-  //   useEffect(() => {
-  //     dispatch({ type: ActionType.Init });
-  //   }, []);
-  useEffect(() => {
-    if (!value) {
+  const { dispatch } = store;
+  useDeepCompareEffect(() => {
+    if (!value || isEqual(compact(value), compact(store.getState().blocks))) {
       return;
     }
-    /*     dispatch({ type: ActionType.ChangeCase, payload: value });
-    const reducers = getReducers(store.getState(), value.type);
     dispatch({
-      type: ActionType.ChangeStateByPlugin,
-      payload: { reducers, project: value },
-    }); */
+      type: 'UpdateAllBlockProps',
+      payload: value,
+    });
   }, [value]);
-  //   useDeepCompareEffect(() => {
-  //     if (!value) {
-  //       return;
-  //     }
-  //     /*if (value.type == 'application') {
-  //         const data: IApplicationData = value.data as any;
-  //         dispatch({ type: ActionType.SetRoutes, payload: data.routes });
-  //       } else */
-  //     if (value.type == 'component') {
-  //       const data: IComponentData = value.data as any;
-  //       dispatch({ type: ActionType.UpdateBlockMoreProps, payload: data.props });
-  //     }
-  //   }, [data]);
   return useMemo(() => <ReactComponentContext.Provider value={store}>{children}</ReactComponentContext.Provider>, [
     version,
   ]);

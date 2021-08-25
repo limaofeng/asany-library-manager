@@ -34,7 +34,7 @@ export default function reducer(state: IBlockState, action: ReactComponentAction
   //     blocks: merge(state.blocks, action.payload.data.props || []),
   //   };
   // }
-  // console.log('action:', state, action);
+  console.log('action:', state, action);
   switch (action.type) {
     case 'UpdateAllBlockProps':
       return {

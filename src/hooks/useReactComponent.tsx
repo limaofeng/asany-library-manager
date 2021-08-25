@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import React, { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
 
 import ReactComponentProvider from '../sketch/ReactComponentProvider';
-import { IComponentDefinition } from '../typings';
+import { IBlockCoreData, IComponentDefinition } from '../typings';
 import { useDeepCompareEffect } from '../utils';
 import useComponent from './useComponent';
 
@@ -38,7 +38,7 @@ function createReactComponentComponent(state: React.RefObject<UseReactComponentS
   };
 }
 
-export default function useReactComponent(id: string, injectProps: any[] = [], _?: IOptions) {
+export default function useReactComponent(id: string, injectProps: IBlockCoreData[] = [], _?: IOptions) {
   const component = useComponent(id);
   const emitter = useMemo<EventEmitter>(() => new EventEmitter(), []);
   const state = useRef<UseReactComponentState>({ component, props: injectProps });
