@@ -288,6 +288,13 @@ export type DispatchWithoutAction = (action: ReactComponentAction) => void;
 
 export type UpdateFunc<T> = (props: T | string, value?: any) => void;
 
+export interface ICustomizer {
+  /**
+   * 配置字段
+   */
+  fields: IComponentProperty[];
+}
+
 export interface IBlockData<T = any> {
   id: string;
   key: string;
@@ -327,13 +334,6 @@ export type IBlockCoreData = {
   props: any;
 };
 
-export interface ICustomizer {
-  /**
-   * 配置字段
-   */
-  fields: IComponentProperty[];
-}
-
 export interface IUpdateBlockData {
   key: string;
   props: any;
@@ -362,6 +362,8 @@ export interface IBlockProviderProps<P> {
   children: React.ReactNode;
 }
 
+export type DivProvider = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+
 export interface IUseBlockState<T, P = DivProvider> extends IBlockData<T> {
   onClick: (e?: React.MouseEvent) => void;
   update: UpdateFunc<T>;
@@ -377,7 +379,5 @@ export type UseBlockCache<T, P> = {
   options: IBlockOptions<T>;
   result: IUseBlock<T, P>;
 };
-
-export type DivProvider = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
 export const defaultEqualityFn = (a: any, b: any) => a === b;
