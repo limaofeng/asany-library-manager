@@ -45,7 +45,7 @@ export class Sketch {
   getBlock(key: string): IBlockData | undefined {
     const [id, blkey] = key.split(':');
     const component = this.components.get(id);
-    return component?.store.getState().blocks.find((item) => item.key == blkey);
+    return component?.store.getState().blocks.find((item) => item.key === blkey);
   }
 
   getComponent(key: string): ReactComponentData | undefined {

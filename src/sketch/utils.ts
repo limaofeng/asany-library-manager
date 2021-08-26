@@ -12,7 +12,6 @@ export function useInternalSelector<Selected>(
   const checkForUpdates = useCallback(function () {
     const newSelectedState = selector(store.getState());
     if (equalityFn(newSelectedState, latestSelectedState.current!)) {
-      console.log('equalityFn', newSelectedState, latestSelectedState.current!);
       return;
     }
     latestSelectedState.current = newSelectedState;

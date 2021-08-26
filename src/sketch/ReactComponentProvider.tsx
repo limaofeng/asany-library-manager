@@ -1,21 +1,21 @@
+import { isEqual } from 'lodash-es';
 import React, { useCallback, useContext, useEffect, useMemo, useReducer, useState } from 'react';
+
 import useSketch from '../hooks/useSketch';
 import {
+  defaultEqualityFn,
   EqualityFn,
+  IBlockData,
   IReactComponentState,
   IReactComponentStoreContext,
-  Selector,
   ReactComponentProviderProps,
+  Selector,
   SubscribeCallback,
-  IBlockData,
-  defaultEqualityFn,
 } from '../typings';
-
-import reducers from './reducer';
 import { generateUUID, useDeepCompareEffect } from '../utils';
-import { isEqual } from 'lodash-es';
-import { useInternalSelector } from './utils';
 import { BlockRootProvider } from './BlockContext';
+import reducers from './reducer';
+import { useInternalSelector } from './utils';
 
 export const ReactComponentContext = React.createContext<IReactComponentStoreContext>([] as any);
 

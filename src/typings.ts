@@ -1,4 +1,4 @@
-import { ComponentType, DependencyList, FC } from 'react';
+import React, { ComponentType, DependencyList, FC } from 'react';
 
 export interface ReactComponent {
   [key: string]: React.ReactElement | ReactComponent | any;
@@ -253,10 +253,6 @@ export interface ComponentMetadata {
 
 export const METADATA_KEY_COMPONENTS = '_COMPONENTS';
 
-export interface IReactComponentState {
-  blocks: IBlockData[];
-}
-
 type UnsubscribeFunc = () => void;
 
 type SubscribeFunc = (callback: SubscribeCallback) => UnsubscribeFunc;
@@ -290,24 +286,7 @@ export interface ReactComponentAction {
 
 export type DispatchWithoutAction = (action: ReactComponentAction) => void;
 
-export type IReactComponentStoreContext = {
-  id: string;
-  getState: () => IReactComponentState;
-  subscribe: SubscribeFunc;
-  dispatch: DispatchWithoutAction;
-};
-
-export interface ReactComponentProviderProps {
-  children: JSX.Element;
-  value: IBlockData<any>[];
-  version?: number;
-}
-
-export interface IBlockState {
-  version: number;
-  definition: IComponentDefinition;
-  blocks: IBlockData<any>[];
-}
+export type UpdateFunc<T> = (props: T | string, value?: any) => void;
 
 export interface IBlockData<T = any> {
   id: string;
@@ -318,6 +297,29 @@ export interface IBlockData<T = any> {
   update: UpdateFunc<T>;
   customizer?: ICustomizer;
   version?: number;
+}
+
+export interface IReactComponentState {
+  blocks: IBlockData[];
+}
+
+export type IReactComponentStoreContext = {
+  id: string;
+  getState: () => IReactComponentState;
+  subscribe: SubscribeFunc;
+  dispatch: DispatchWithoutAction;
+};
+
+export interface ReactComponentProviderProps {
+  children: React.ReactNode;
+  value: IBlockData<any>[];
+  version?: number;
+}
+
+export interface IBlockState {
+  version: number;
+  definition: IComponentDefinition;
+  blocks: IBlockData<any>[];
 }
 
 export type IBlockCoreData = {
@@ -360,14 +362,14 @@ export interface IBlockProviderProps<P> {
   children: React.ReactNode;
 }
 
-export type UpdateFunc<T> = (props: T | string, value?: any) => void;
-
 export interface IUseBlockState<T, P = DivProvider> extends IBlockData<T> {
   onClick: (e?: React.MouseEvent) => void;
   update: UpdateFunc<T>;
   props: T;
   Provider: React.ComponentType<IBlockProviderProps<P> & P>;
 }
+
+export type IUseBlock<T, P = DivProvider> = IUseBlockState<T, P>;
 
 export type UseBlockCache<T, P> = {
   id: string;
@@ -377,7 +379,5 @@ export type UseBlockCache<T, P> = {
 };
 
 export type DivProvider = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
-
-export type IUseBlock<T, P = DivProvider> = IUseBlockState<T, P>;
 
 export const defaultEqualityFn = (a: any, b: any) => a === b;

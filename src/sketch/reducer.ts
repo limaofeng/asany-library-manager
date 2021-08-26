@@ -45,7 +45,7 @@ export default function reducer(state: IBlockState, action: ReactComponentAction
       return {
         ...state,
         version: state.version + 1,
-        blocks: state.blocks.filter(({ key }) => key != action.payload.key),
+        blocks: state.blocks.filter(({ key }) => key !== action.payload.key),
       };
     case 'UpdateBlockProps': {
       const data = action.payload as IUpdateBlockData;

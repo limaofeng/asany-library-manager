@@ -43,7 +43,7 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
       dispatch({
         type: 'UpdateBlockProps',
         payload: {
-          key: key,
+          key,
           props,
         },
       });
