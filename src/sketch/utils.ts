@@ -17,10 +17,6 @@ export function useInternalSelector<Selected>(
     latestSelectedState.current = newSelectedState;
     forceRender();
   }, []);
-  useEffect(() => {
-    const unsubscribe = store.subscribe(checkForUpdates);
-    return unsubscribe;
-  }, []);
-
+  useEffect(() => store.subscribe(checkForUpdates), []);
   return selectedState;
 }

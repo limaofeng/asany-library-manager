@@ -81,7 +81,7 @@ export class Sketch {
   getComponentData(id: string): IBlockCoreData[] {
     const component = this.components.get(id);
     if (!component) {
-      throw 'component is null!';
+      throw new Error('component is null!');
     }
     return component.store.getState().blocks.map(({ key, props }) => ({ key, props }));
   }
@@ -89,7 +89,7 @@ export class Sketch {
   useSelector(id: string) {
     const com = this.getComponent(id);
     if (!com) {
-      throw 'component is null!';
+      throw new Error('component is null!');
     }
     return function <Selected>(selector: Selector<Selected>, equalityFn: EqualityFn<Selected> = defaultEqualityFn) {
       return useInternalSelector(com.store, selector, equalityFn);

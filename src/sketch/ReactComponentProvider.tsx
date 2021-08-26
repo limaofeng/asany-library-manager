@@ -42,13 +42,16 @@ function useStore(): IReactComponentStoreContext {
       listener();
     }
   }, []);
-  const initStore = {
+  const [store] = useState({
     id: COMPONENT_ID,
+    getBlock: (key: string) => {
+      const state = store.getState();
+      return state.blocks.find((item) => item.key == key);
+    },
     getState: () => state,
     dispatch,
     subscribe: handleSubscribe,
-  };
-  const [store] = useState(initStore);
+  });
   useEffect(() => {
     store.getState = () => state;
     handleDispatchSubscribe();

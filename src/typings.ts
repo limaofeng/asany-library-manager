@@ -81,7 +81,7 @@ export type VisibleFunc = (props: any) => boolean;
 
 type DepType = ((state: any) => any | Promise<any>) | string[];
 
-export interface IComponentProperty {
+export interface IField {
   // 字段名
   name: string;
   /**
@@ -167,7 +167,7 @@ export interface IGroup {
   id: string;
   name?: string;
   layout?: 'Inline' | 'Stacked';
-  fields: IComponentProperty[];
+  fields: IField[];
 }
 
 export interface IComponentVersion {
@@ -201,7 +201,7 @@ export interface IComponentDefinition {
   /**
    * 配置属性定义
    */
-  props?: IComponentProperty[];
+  props?: IField[];
   /**
    * 所属组件库
    */
@@ -288,11 +288,37 @@ export type DispatchWithoutAction = (action: ReactComponentAction) => void;
 
 export type UpdateFunc<T> = (props: T | string, value?: any) => void;
 
+export interface IFieldGroup {
+  id: string;
+  name?: string;
+  visible?: boolean | VisibleFunc;
+  layout?: 'Inline' | 'Stacked';
+}
+
+export interface ITabPane {
+  name: string;
+  visible?: boolean | VisibleFunc;
+  groups: string[] | IFieldGroup[];
+  customizer?: ICustomizer;
+}
+
 export interface ICustomizer {
+  /**
+   * ？还未想好怎么表述
+   */
+  frame?: boolean;
+  /**
+   * 选项卡
+   */
+  tabs?: ITabPane[];
+  /**
+   * 字段分组设置
+   */
+  groups?: IFieldGroup[];
   /**
    * 配置字段
    */
-  fields: IComponentProperty[];
+  fields: IField[];
 }
 
 export interface IBlockData<T = any> {
@@ -312,6 +338,7 @@ export interface IReactComponentState {
 
 export type IReactComponentStoreContext = {
   id: string;
+  getBlock: (key: string) => IBlockData | undefined;
   getState: () => IReactComponentState;
   subscribe: SubscribeFunc;
   dispatch: DispatchWithoutAction;
