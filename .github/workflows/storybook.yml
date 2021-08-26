@@ -1,6 +1,7 @@
 name: Deploy Storybook
-on: 
+on:
   push:
+    branches: [master]
     paths: ["stories/**", "src/**"]
 jobs:
   build-and-deploy:
@@ -18,7 +19,7 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Install and Build 🔧
-        run: | 
+        run: |
           yarn build
           cat CHANGELOG.md >> ./stories/docs/Changelog.stories.mdx
           yarn run build-storybook

@@ -1,11 +1,8 @@
 import { useEffect, useReducer, useRef } from 'react';
-import { IComponentDefinition } from '../typings';
+import { defaultEqualityFn, EqualityFn, IComponentDefinition } from '../typings';
 import useSunmao from './useSunmao';
 
-export type EqualityFn = (a: IComponentDefinition, b: IComponentDefinition) => boolean;
-const defaultEqualityFn = (a: any, b: any) => a === b;
-
-const useComponent = (name: string, equalityFn: EqualityFn = defaultEqualityFn) => {
+const useComponent = (name: string, equalityFn: EqualityFn<any> = defaultEqualityFn) => {
   const sunmao = useSunmao();
   const [, forceRender] = useReducer((s) => s + 1, 0);
   const latestSelectedState = useRef<IComponentDefinition>();

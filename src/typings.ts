@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { ComponentType, DependencyList, FC } from 'react';
 
 export interface ReactComponent {
   [key: string]: React.ReactElement | ReactComponent | any;
@@ -180,7 +180,7 @@ export interface IComponentDefinition {
   id: string;
   name: string;
   icon?: string;
-  component: any;
+  component: ComponentType;
   // 组件标签
   tags?: string[];
   versions?: IComponentVersion[];
@@ -252,3 +252,132 @@ export interface ComponentMetadata {
 }
 
 export const METADATA_KEY_COMPONENTS = '_COMPONENTS';
+
+type UnsubscribeFunc = () => void;
+
+type SubscribeFunc = (callback: SubscribeCallback) => UnsubscribeFunc;
+
+export type ReactComponentActionType =
+  /**
+   * 注册区块
+   */
+  | 'RegistrationBlock'
+  /**
+   * 卸载区块
+   */
+  | 'UninstallBlock'
+  /**
+   * 更新 Block 数据
+   */
+  | 'UpdateBlockProps'
+  /**
+   * 更新 Block 数据
+   */
+  | 'UpdateAllBlockProps'
+  /**
+   * 更新 Block 定制器
+   */
+  | 'UpdateBlockCustomizer';
+
+export interface ReactComponentAction {
+  type: ReactComponentActionType;
+  payload?: any;
+}
+
+export type DispatchWithoutAction = (action: ReactComponentAction) => void;
+
+export type UpdateFunc<T> = (props: T | string, value?: any) => void;
+
+export interface ICustomizer {
+  /**
+   * 配置字段
+   */
+  fields: IComponentProperty[];
+}
+
+export interface IBlockData<T = any> {
+  id: string;
+  key: string;
+  icon: string;
+  title: string;
+  props?: T;
+  update: UpdateFunc<T>;
+  customizer?: ICustomizer;
+  version?: number;
+}
+
+export interface IReactComponentState {
+  blocks: IBlockData[];
+}
+
+export type IReactComponentStoreContext = {
+  id: string;
+  getState: () => IReactComponentState;
+  subscribe: SubscribeFunc;
+  dispatch: DispatchWithoutAction;
+};
+
+export interface ReactComponentProviderProps {
+  children: React.ReactNode;
+  value: IBlockData<any>[];
+  version?: number;
+}
+
+export interface IBlockState {
+  version: number;
+  definition: IComponentDefinition;
+  blocks: IBlockData<any>[];
+}
+
+export type IBlockCoreData = {
+  key: string;
+  props: any;
+};
+
+export interface IUpdateBlockData {
+  key: string;
+  props: any;
+}
+
+export type Selector<Selected> = (state: IReactComponentState) => Selected;
+export type EqualityFn<Selected> = (theNew: Selected, latest: Selected) => boolean;
+
+export interface IBlockDataProps {
+  [key: string]: any;
+}
+
+export interface IBlockOptions<T> {
+  key: string;
+  icon: string;
+  title: string;
+  props?: T;
+  customizer?: ICustomizer;
+}
+
+export interface IBlockProviderProps<P> {
+  ref?: any;
+  clickable?: boolean;
+  tag?: string | ComponentType<P>;
+  deps?: DependencyList | undefined;
+  children: React.ReactNode;
+}
+
+export type DivProvider = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
+
+export interface IUseBlockState<T, P = DivProvider> extends IBlockData<T> {
+  onClick: (e?: React.MouseEvent) => void;
+  update: UpdateFunc<T>;
+  props: T;
+  Provider: React.ComponentType<IBlockProviderProps<P> & P>;
+}
+
+export type IUseBlock<T, P = DivProvider> = IUseBlockState<T, P>;
+
+export type UseBlockCache<T, P> = {
+  id: string;
+  key: string;
+  options: IBlockOptions<T>;
+  result: IUseBlock<T, P>;
+};
+
+export const defaultEqualityFn = (a: any, b: any) => a === b;
