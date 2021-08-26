@@ -1,3 +1,14 @@
+## [0.2.3](https://github.com/limaofeng/sunmao/compare/v0.2.2...v0.2.3) (2021-08-26)
+
+
+### Features
+
+* :zap: 为 Sketch 对象添加辅助方法 ([0de80e8](https://github.com/limaofeng/sunmao/commit/0de80e88022aed65018f9b20d4c804164d78bcdb))
+* :zap: 完善 Sketch 配置 API ([c7977b3](https://github.com/limaofeng/sunmao/commit/c7977b3fa8f833ce72db5c871a576cf2b64eb52a))
+* :zap: 添加 useSketch 及 useBlock 实现组件配置相关 API ([86edb1b](https://github.com/limaofeng/sunmao/commit/86edb1b8123220dc94c119e45149f7a64a01e37d))
+
+
+
 ## [0.2.2](https://github.com/limaofeng/sunmao/compare/v0.1.5...v0.2.2) (2021-08-26)
 
 ### Features
