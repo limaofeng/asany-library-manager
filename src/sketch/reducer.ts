@@ -1,13 +1,5 @@
 import { IBlockState, IUpdateBlockData, ReactComponentAction } from '../typings';
 
-// const defaultState: IBlockState = {
-//   version: 0,
-//   definition: {} as any,
-//   activeKey: '',
-//   blocks: [],
-//   stack: [],
-// };
-
 const merge = (props: any[], newProps: any[]) => {
   const newBolcks = [...newProps];
   return [
@@ -70,18 +62,6 @@ export default function reducer(state: IBlockState, action: ReactComponentAction
         }),
       };
     }
-    //   case BlockActionType.UpdateBlockCustomizer: {
-    //     const data = action.payload as IUpdateBlockData;
-    //     return {
-    //       ...state,
-    //       blocks: state.blocks.map((block) => {
-    //         if (block.key === data.key) {
-    //           block.customizer = data.customizer;
-    //         }
-    //         return block;
-    //       }),
-    //     };
-    //   }
     default:
       return state;
   }
