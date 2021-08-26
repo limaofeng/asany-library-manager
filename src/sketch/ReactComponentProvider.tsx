@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useMemo, useReducer, useState } from 'react';
-import { useSketch } from './SketchContext';
+import useSketch from '../hooks/useSketch';
 import {
   EqualityFn,
   IReactComponentState,

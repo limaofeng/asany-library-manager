@@ -1,4 +1,6 @@
-import React, { useContext, useMemo } from 'react';
+import { EventEmitter } from 'events';
+import React, { useMemo } from 'react';
+
 import {
   defaultEqualityFn,
   EqualityFn,
@@ -8,7 +10,6 @@ import {
   IUpdateBlockData,
   Selector,
 } from '../typings';
-import { EventEmitter } from 'events';
 import { useInternalSelector } from './utils';
 
 type ReactComponentData = {
@@ -20,7 +21,7 @@ type EventCallback = (...params: any) => void;
 
 type SketchEventName = 'block-click' | 'block-mouse-enter' | 'block-mouse-leave';
 
-class Sketch {
+export class Sketch {
   private emitter = new EventEmitter();
   private components = new Map<string, ReactComponentData>();
 
@@ -101,10 +102,6 @@ export const SketchContext = React.createContext<Sketch>(new Sketch());
 interface SketchProviderProps {
   children: React.ReactNode;
 }
-
-export const useSketch = () => {
-  return useContext(SketchContext);
-};
 
 export const SketchProvider = (props: SketchProviderProps) => {
   const { children } = props;

@@ -271,22 +271,6 @@ export type ReactComponentActionType =
    */
   | 'UninstallBlock'
   /**
-   * 推入区块
-   */
-  | 'PushBlock'
-  /**
-   * 弹出区块
-   */
-  | 'PopBlock'
-  /**
-   * 选中区块
-   */
-  | 'SelectedBlock'
-  /**
-   * 取消区块选择
-   */
-  | 'UncheckBlock'
-  /**
    * 更新 Block 数据
    */
   | 'UpdateBlockProps'

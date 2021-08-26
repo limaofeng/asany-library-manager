@@ -25,16 +25,6 @@ const merge = (props: any[], newProps: any[]) => {
 };
 
 export default function reducer(state: IBlockState, action: ReactComponentAction): IBlockState {
-  // const { stack } = state || {};
-  // if (action.type === ProjectActionType.ChangeCase && action.payload.type === 'component') {
-  //   return {
-  //     ...defaultState,
-  //     version: state.version + 1,
-  //     component: action.payload.data.id,
-  //     blocks: merge(state.blocks, action.payload.data.props || []),
-  //   };
-  // }
-  console.log('action:', state, action);
   switch (action.type) {
     case 'UpdateAllBlockProps':
       return {
@@ -65,32 +55,6 @@ export default function reducer(state: IBlockState, action: ReactComponentAction
         version: state.version + 1,
         blocks: state.blocks.filter(({ key }) => key != action.payload.key),
       };
-    //   case BlockActionType.PushBlock:
-    //     const key = (action.payload as IBlockData<any>).key;
-    //     if (key === father) {
-    //       stack.length = 0;
-    //     }
-    //     stack.push(key);
-    //     return {
-    //       ...state,
-    //       stack: [...stack],
-    //     };
-    //   case BlockActionType.PopBlock:
-    //     stack.pop();
-    //     return {
-    //       ...state,
-    //       stack: [...stack],
-    //     };
-    //   case BlockActionType.SelectedBlock:
-    //     return {
-    //       ...state,
-    //       activeKey: (action.payload as IBlockData<any>).key,
-    //     };
-    //   case BlockActionType.UncheckBlock:
-    //     return {
-    //       ...state,
-    //       activeKey: father,
-    //     };
     case 'UpdateBlockProps': {
       const data = action.payload as IUpdateBlockData;
       console.log('action:', action);
@@ -118,8 +82,6 @@ export default function reducer(state: IBlockState, action: ReactComponentAction
     //       }),
     //     };
     //   }
-    //   case GlobalAsanyAction.Init:
-    //     return defaultState;
     default:
       return state;
   }
