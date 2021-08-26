@@ -1,13 +1,4 @@
-## [0.2.2](https://github.com/limaofeng/sunmao/compare/v0.2.1...v0.2.2) (2021-08-26)
-
-
-
-## [0.2.1](https://github.com/limaofeng/sunmao/compare/v0.2.0...v0.2.1) (2021-08-19)
-
-
-
-# [0.2.0](https://github.com/limaofeng/sunmao/compare/v0.1.5...v0.2.0) (2021-08-19)
-
+## [0.2.2](https://github.com/limaofeng/sunmao/compare/v0.1.5...v0.2.2) (2021-08-26)
 
 ### Features
 
@@ -15,11 +6,7 @@
 
 
 
-## [0.1.5](https://github.com/limaofeng/sunmao/compare/v0.1.4...v0.1.5) (2021-08-19)
-
-
-
-## [0.1.4](https://github.com/limaofeng/asany-library-manager/compare/v0.1.3...v0.1.4) (2021-07-21)
+## [0.1.5](https://github.com/limaofeng/sunmao/compare/v0.1.3...v0.1.5) (2021-08-19)
 
 
 ### Bug Fixes
