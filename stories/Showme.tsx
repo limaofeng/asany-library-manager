@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useBlock } from '../src/hooks';
-import { ComponentPropertyType } from '../src/typings';
 
 function Second() {
   const { key, props, update, Provider } = useBlock({
@@ -14,7 +13,7 @@ function Second() {
       fields: [
         {
           name: 'title',
-          type: ComponentPropertyType.String,
+          type: 'String',
         },
       ],
     },
@@ -38,7 +37,7 @@ function Showme() {
       fields: [
         {
           name: 'title',
-          type: ComponentPropertyType.String,
+          type: 'String',
         },
       ],
     },

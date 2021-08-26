@@ -1,21 +1,9 @@
-import React from 'react';
 import { Meta, Story } from '@storybook/react';
-import Sunmao, {
-  SunmaoProvider,
-  getMetadata,
-  library,
-  component,
-  useSketch,
-  useBlock,
-  ComponentPropertyType,
-  useReactComponent,
-  SketchProvider,
-} from '../src';
+import React from 'react';
 
-import Showme from './Showme';
-import { useEffect } from '@storybook/addons';
-import { useDispatch } from '../src/sketch/ReactComponentProvider';
+import Sunmao, { component, library, SketchProvider, SunmaoProvider, useReactComponent, useSketch } from '../src';
 import { sleep } from '../src/utils';
+import Showme from './Showme';
 
 const meta: Meta = {
   title: 'Sketch',

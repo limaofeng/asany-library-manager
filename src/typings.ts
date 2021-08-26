@@ -51,18 +51,17 @@ export enum IComponentPlatform {
   mobile,
 }
 
-export enum ComponentPropertyType {
-  JSON = 'JSON',
-  Text = 'Text',
-  Image = 'Image',
-  Integer = 'Integer',
-  Boolean = 'Boolean',
-  Float = 'Float',
-  String = 'String',
-  Date = 'Date',
-  Enum = 'Enum',
-  File = 'File',
-}
+export type IFieldType =
+  | 'String'
+  | 'Text'
+  | 'Integer'
+  | 'Float'
+  | 'Boolean'
+  | 'Date'
+  | 'DateTime'
+  | 'JSON'
+  | 'Asset'
+  | 'Enum';
 
 export type SubscribeCallback = () => void;
 
@@ -103,7 +102,7 @@ export interface IField {
   placeholder?: string;
 
   // 数据类型
-  type: ComponentPropertyType;
+  type: IFieldType;
   /**
    * 渲染器
    */
