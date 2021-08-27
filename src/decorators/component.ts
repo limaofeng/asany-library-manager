@@ -11,12 +11,15 @@ export default function component(metadata?: ComponentMetadata) {
     } else {
       Reflect.defineMetadata(METADATA_KEY_COMPONENTS, components, target);
     }
-    if (!descriptor) {
-      console.error('descriptor is null');
-      return;
+    let method: () => any;
+    if (descriptor) {
+      method = descriptor.value || (descriptor as any).initializer;
+    } else {
+      method = function (this: any) {
+        return this[propertyKey];
+      };
     }
-    const method = descriptor.value || (descriptor as any).initializer;
-    descriptor.value = function () {
+    const getValue = function (this: any) {
       const retval = method.apply(this);
       if (metadata && metadata.name) {
         for (const key of Object.keys(metadata)) {
@@ -27,6 +30,9 @@ export default function component(metadata?: ComponentMetadata) {
       }
       return retval;
     };
-    components.push(descriptor.value);
+    if (descriptor) {
+      descriptor.value = getValue;
+    }
+    components.push(getValue);
   };
 }
