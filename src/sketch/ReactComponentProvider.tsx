@@ -1,9 +1,9 @@
-import { isEqual } from 'lodash-es';
 import React, { useCallback, useContext, useEffect, useMemo, useReducer, useState } from 'react';
+
+import { isEqual } from 'lodash-es';
 
 import useSketch from '../hooks/useSketch';
 import {
-  defaultEqualityFn,
   EqualityFn,
   IBlockData,
   IReactComponentState,
@@ -11,8 +11,10 @@ import {
   ReactComponentProviderProps,
   Selector,
   SubscribeCallback,
+  defaultEqualityFn,
 } from '../typings';
 import { generateUUID, useDeepCompareEffect } from '../utils';
+
 import { BlockRootProvider } from './BlockContext';
 import reducers from './reducer';
 import { useInternalSelector } from './utils';

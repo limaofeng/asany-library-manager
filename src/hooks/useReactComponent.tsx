@@ -1,9 +1,11 @@
-import { EventEmitter } from 'events';
 import React, { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
+
+import { EventEmitter } from 'events';
 
 import ReactComponentProvider from '../sketch/ReactComponentProvider';
 import { IBlockCoreData, IComponentDefinition } from '../typings';
 import { useDeepCompareEffect } from '../utils';
+
 import useComponent from './useComponent';
 
 const EVENT_REACT_COMPONENT_PROPS_CHANGE = 'EVENT_REACT_COMPONENT_PROPS_CHANGE';

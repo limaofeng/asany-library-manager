@@ -1,5 +1,7 @@
 import { useEffect, useReducer, useRef } from 'react';
-import { defaultEqualityFn, EqualityFn, IComponentDefinition } from '../typings';
+
+import { EqualityFn, IComponentDefinition, defaultEqualityFn } from '../typings';
+
 import useSunmao from './useSunmao';
 
 const useComponent = (name: string, equalityFn: EqualityFn<any> = defaultEqualityFn) => {

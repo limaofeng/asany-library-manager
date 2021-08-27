@@ -3,8 +3,8 @@ import { ComponentType } from 'react';
 import {
   ComponentSelector,
   ComponentTreeNode,
-  IComponentDefinition,
   IComponentCascader,
+  IComponentDefinition,
   ILibraryDefinition,
   ITemplate,
   SubscribeCallback,

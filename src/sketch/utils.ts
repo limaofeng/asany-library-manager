@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useReducer, useRef } from 'react';
-import { defaultEqualityFn, EqualityFn, IReactComponentStoreContext, Selector } from '../typings';
+
+import { EqualityFn, IReactComponentStoreContext, Selector, defaultEqualityFn } from '../typings';
 
 export function useInternalSelector<Selected>(
   store: IReactComponentStoreContext,

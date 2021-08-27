@@ -1,15 +1,16 @@
-import { isEqual } from 'lodash-es';
 import React, { useCallback, useContext, useEffect, useMemo, useReducer, useRef } from 'react';
+
+import { isEqual } from 'lodash-es';
+
 import useSketch from '../hooks/useSketch';
 import { buildBlockProvider, useBlockContext } from '../sketch/BlockContext';
-
 import { ReactComponentContext, useDispatch } from '../sketch/ReactComponentProvider';
 import {
+  DivProvider,
   IBlockDataProps,
   IBlockOptions,
-  IUseBlock,
-  DivProvider,
   IReactComponentStoreContext,
+  IUseBlock,
   UseBlockCache,
 } from '../typings';
 

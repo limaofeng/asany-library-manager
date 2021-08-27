@@ -1,5 +1,6 @@
-import classnames from 'classnames';
 import React, { useContext, useMemo, useRef, useState } from 'react';
+
+import classnames from 'classnames';
 
 import { DivProvider, IBlockProviderProps, UseBlockCache } from '../typings';
 

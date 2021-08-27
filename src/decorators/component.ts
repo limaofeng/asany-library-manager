@@ -1,5 +1,6 @@
 import camelCase from 'lodash-es/camelCase';
 import capitalize from 'lodash-es/capitalize';
+
 import { ComponentMetadata, METADATA_KEY_COMPONENTS } from '../typings';
 
 export default function component(metadata?: ComponentMetadata) {

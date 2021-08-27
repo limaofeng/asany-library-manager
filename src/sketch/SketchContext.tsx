@@ -1,15 +1,17 @@
-import { EventEmitter } from 'events';
 import React, { useMemo } from 'react';
 
+import { EventEmitter } from 'events';
+
 import {
-  defaultEqualityFn,
   EqualityFn,
   IBlockCoreData,
   IBlockData,
   IReactComponentStoreContext,
   IUpdateBlockData,
   Selector,
+  defaultEqualityFn,
 } from '../typings';
+
 import { useInternalSelector } from './utils';
 
 type ReactComponentData = {
