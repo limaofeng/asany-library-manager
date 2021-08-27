@@ -1,9 +1,9 @@
 # 榫卯
-
-![GitHub Workflow workflow](https://github.com/limaofeng/sunmao/actions/workflows/main.yml/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/limaofeng/sunmao/badge.svg?branch=master)](https://coveralls.io/github/limaofeng/sunmao?branch=master)
-[![GitHub release](https://img.shields.io/github/release/limaofeng/sunmao)](https://github.com/limaofeng/sunmao/releases/)
-[![GitHub license](https://img.shields.io/github/license/limaofeng/sunmao)](https://github.com/limaofeng/sunmao/blob/master/LICENSE)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/limaofeng/sunmao/CI?style=flat-square)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/limaofeng/sunmao?style=flat-square)](https://www.codefactor.io/repository/github/limaofeng/sunmao)
+[![Coverage Status](https://img.shields.io/coveralls/github/limaofeng/sunmao?style=flat-square)](https://coveralls.io/github/limaofeng/sunmao?branch=master)
+[![GitHub release](https://img.shields.io/github/release/limaofeng/sunmao?style=flat-square)](https://github.com/limaofeng/sunmao/releases/)
+[![GitHub license](https://img.shields.io/github/license/limaofeng/sunmao?style=flat-square)](https://github.com/limaofeng/sunmao/blob/master/LICENSE)
 
 ----
 
