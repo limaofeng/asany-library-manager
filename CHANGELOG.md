@@ -1,3 +1,12 @@
+## [0.2.5](https://github.com/limaofeng/sunmao/compare/v0.2.4...v0.2.5) (2021-08-27)
+
+
+### Bug Fixes
+
+* :zap: 解决 component 装饰器 descriptor is null 时, 获取组件失败的 BUG ([7750e86](https://github.com/limaofeng/sunmao/commit/7750e86b09beda3430e3ca0f85b6564c1cc6834a))
+
+
+
 ## [0.2.4](https://github.com/limaofeng/sunmao/compare/v0.2.3...v0.2.4) (2021-08-26)
 
 
