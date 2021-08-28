@@ -11,8 +11,6 @@ export default function library(metadata: LibraryMetadata, loadComponentsMethod?
     const name = Reflect.getMetadata('name', target);
     const description = Reflect.getMetadata('description', target);
 
-    console.log('111', Reflect.getMetadata('xx', target.prototype));
-
     const components = Reflect.getMetadata(METADATA_KEY_COMPONENTS, target.prototype);
 
     return class extends target implements ILibraryDefinition {

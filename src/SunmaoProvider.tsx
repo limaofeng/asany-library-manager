@@ -20,6 +20,7 @@ function SunmaoProvider({ sunmao, debug = true, children }: SunmaoProviderProps)
     return (
       <SunmaoContext.Provider value={{ sunmao: sunmao || defaultSunmao, debug }}>{children}</SunmaoContext.Provider>
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }
 

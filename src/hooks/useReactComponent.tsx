@@ -34,7 +34,7 @@ function createReactComponentComponent(state: React.RefObject<UseReactComponentS
 
     return (
       <ReactComponentProvider value={props} version={version}>
-        {React.createElement(component?.component!)}
+        {component && React.createElement(component.component)}
       </ReactComponentProvider>
     );
   };
