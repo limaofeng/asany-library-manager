@@ -2,22 +2,17 @@ name: CI
 on: [push]
 jobs:
   build:
-    name: Build
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        node: ["14.x"]
-        os: [ubuntu-latest]
+    name: Build, lint, and test
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
 
-      - name: Use Node ${{ matrix.node }}
+      - name: Use Node 14.x
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 14.x
 
       - name: Install deps and build (with cache)
         uses: bahmutov/npm-install@v1
@@ -27,76 +22,6 @@ jobs:
 
       - name: Test
         run: yarn test --ci --coverage --maxWorkers=2
-
-      - name: Check coverage
-        run: cat ./coverage/lcov.info
-
-      - name: Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build
-        run: yarn build
-
-  test:
-    name: Test
-
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        node: ["14.x"]
-        os: [ubuntu-latest]
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-
-      - name: Use Node ${{ matrix.node }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: Install deps and build (with cache)
-        uses: bahmutov/npm-install@v1
-
-      - name: Test
-        run: yarn test --ci --coverage --maxWorkers=2
-
-      - name: Check coverage
-        run: cat ./coverage/lcov.info
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@main
-        with:
-          path: coverage/
-          retention-days: 1
-
-  coverage:
-    name: Coveralls
-    needs: test
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        node: ["14.x"]
-        os: [ubuntu-latest]
-
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v2
-
-      - name: Use Node ${{ matrix.node }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@main
-        with:
-          path: coverage/
-
-      - name: Check coverage
-        run: cd ./coverage && ls
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
