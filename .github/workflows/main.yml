@@ -28,6 +28,9 @@ jobs:
       - name: Test
         run: yarn test --ci --coverage --maxWorkers=2
 
+      - name: Check coverage
+        run: cat ./coverage/lcov.info
+
       - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
@@ -93,7 +96,7 @@ jobs:
           path: coverage/
 
       - name: Check coverage
-        run: cat ./coverage/lcov.info
+        run: cd ./coverage && ls
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
