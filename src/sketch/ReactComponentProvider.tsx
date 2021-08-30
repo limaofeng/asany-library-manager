@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useMemo, useReducer, useState } from 'react';
 
-import { isEqual } from 'lodash-es';
+import isEqual from 'lodash/isEqual';
 
 import useSketch from '../hooks/useSketch';
 import {
@@ -28,27 +28,34 @@ function useStore(): IReactComponentStoreContext {
     blocks: [],
   });
   const [listeners] = useState<SubscribeCallback[]>([]);
-  const handleUnsubscribe = (callback: SubscribeCallback) => () => {
-    const index = listeners.indexOf(callback);
-    console.log('listeners unsubscribe:', listeners.length);
-    if (index > -1) {
-      listeners.splice(index, 1);
-    }
-  };
-  const handleSubscribe = useCallback((callback: SubscribeCallback) => {
-    listeners.unshift(callback);
-    return handleUnsubscribe(callback);
-  }, []);
+  const handleUnsubscribe = useCallback(
+    (callback: SubscribeCallback) => {
+      return () => {
+        const index = listeners.indexOf(callback);
+        if (index > -1) {
+          listeners.splice(index, 1);
+        }
+      };
+    },
+    [listeners]
+  );
+  const handleSubscribe = useCallback(
+    (callback: SubscribeCallback) => {
+      listeners.unshift(callback);
+      return handleUnsubscribe(callback);
+    },
+    [handleUnsubscribe, listeners]
+  );
   const handleDispatchSubscribe = useCallback(() => {
     for (const listener of listeners) {
       listener();
     }
-  }, []);
+  }, [listeners]);
   const [store] = useState({
     id: COMPONENT_ID,
     getBlock: (key: string) => {
       const state = store.getState();
-      return state.blocks.find((item) => item.key == key);
+      return state.blocks.find((item) => item.key === key);
     },
     getState: () => state,
     dispatch,
@@ -57,7 +64,9 @@ function useStore(): IReactComponentStoreContext {
   useEffect(() => {
     store.getState = () => state;
     handleDispatchSubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => sketch.add({ id: COMPONENT_ID, store }), []);
   return store;
 }
@@ -98,6 +107,7 @@ export default function ReactComponentProvider(props: ReactComponentProviderProp
         <BlockRootProvider>{children}</BlockRootProvider>
       </ReactComponentContext.Provider>
     ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [version]
   );
 }

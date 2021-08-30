@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useMemo, useReducer, useRef } from 'react';
 
-import { isEqual } from 'lodash-es';
+import isEqual from 'lodash/isEqual';
 
 import useSketch from '../hooks/useSketch';
 import { buildBlockProvider, useBlockContext } from '../sketch/BlockContext';
@@ -24,6 +24,7 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
   const cache = useRef<UseBlockCache<T, P>>({ id: store.id + ':' + key, key, options, result: [] as any });
   const latestProps = useRef<any>(options.props);
   // 创建 BlockProvider，组合 useBlockContext 使用
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const Provider = useMemo(() => buildBlockProvider(key, cache), []);
 
   const dispatch = useDispatch();
@@ -49,12 +50,14 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
         },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClick = useCallback((e?: React.MouseEvent) => {
     const { id } = cache.current;
     e && e.stopPropagation();
     sketch.trigger('block-click', id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 向 workspace 中注册当前 block
@@ -77,16 +80,19 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
         payload: { key },
       });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleMouseEnter = useCallback(() => {
     const { id } = cache.current;
     sketch.trigger('block-mouse-enter', id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleMouseLeave = useCallback(() => {
     const { id } = cache.current;
     sketch.trigger('block-mouse-leave', id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -100,6 +106,7 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
       ele.removeEventListener('mouseenter', handleMouseEnter);
       ele.removeEventListener('mouseleave', handleMouseLeave);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const checkForUpdates = useCallback(() => {
@@ -110,10 +117,12 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
     }
     latestProps.current = newProps;
     forceRender();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     return store.subscribe(checkForUpdates);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   cache.current.result = useMemo(
@@ -127,6 +136,7 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
       version,
       key,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [latestProps.current, version]
   );
 

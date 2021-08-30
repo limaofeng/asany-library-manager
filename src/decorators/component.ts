@@ -1,5 +1,5 @@
-import camelCase from 'lodash-es/camelCase';
-import capitalize from 'lodash-es/capitalize';
+import camelCase from 'lodash/camelCase';
+import capitalize from 'lodash/capitalize';
 
 import { ComponentMetadata, METADATA_KEY_COMPONENTS } from '../typings';
 
