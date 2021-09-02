@@ -1,5 +1,5 @@
 import camelCase from 'lodash/camelCase';
-import capitalize from 'lodash/capitalize';
+import upperFirst from 'lodash/upperFirst';
 
 import { ComponentMetadata, METADATA_KEY_COMPONENTS } from '../typings';
 
@@ -26,7 +26,7 @@ export default function component(metadata?: ComponentMetadata) {
           Reflect.defineMetadata(key, (metadata as any)[key], retval);
         }
       } else {
-        Reflect.defineMetadata('name', capitalize(camelCase(propertyKey)), retval);
+        Reflect.defineMetadata('name', upperFirst(camelCase(propertyKey)), retval);
       }
       return retval;
     };
