@@ -1,3 +1,12 @@
+## [0.2.7](https://github.com/limaofeng/sunmao/compare/v0.2.6...v0.2.7) (2021-09-02)
+
+
+### Bug Fixes
+
+* 自动转换组件名称逻辑为 upperFirst(camelCase(${name})) ([0d6c355](https://github.com/limaofeng/sunmao/commit/0d6c3559c00cf851abff9a29378af18199c786de))
+
+
+
 ## [0.2.6](https://github.com/limaofeng/sunmao/compare/v0.2.5...v0.2.6) (2021-08-30)
 
 
