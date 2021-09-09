@@ -19,9 +19,19 @@ interface UseReactComponentState {
   props: any[];
 }
 
-function createReactComponentComponent(state: React.RefObject<UseReactComponentState>, emitter: EventEmitter) {
-  return function () {
+type ExternalProps = {
+  children?: React.ReactNode;
+  [key: string]: any;
+};
+
+function createReactComponentComponent(
+  state: React.RefObject<UseReactComponentState>,
+  emitter: EventEmitter
+): React.ComponentType {
+  return function (externalProps: ExternalProps) {
+    const { children, ...passthroughProps } = externalProps;
     const [version, forceRender] = useReducer((s) => s + 1, 0);
+    const cache = useRef<any>(externalProps || {});
 
     const { component, props } = state.current!;
 
@@ -32,9 +42,21 @@ function createReactComponentComponent(state: React.RefObject<UseReactComponentS
       };
     }, []);
 
+    useEffect(() => {
+      for (const key of Object.keys(externalProps)) {
+        if (cache.current[key] !== externalProps[key]) {
+          forceRender();
+          return;
+        }
+      }
+      return () => {
+        cache.current = externalProps;
+      };
+    }, [externalProps]);
+
     return (
       <ReactComponentProvider value={props} version={version}>
-        {component && React.createElement(component.component)}
+        {component && React.createElement(component.component, passthroughProps, children)}
       </ReactComponentProvider>
     );
   };
@@ -44,7 +66,7 @@ export default function useReactComponent(id: string, injectProps: IBlockCoreDat
   const component = useComponent(id);
   const emitter = useMemo<EventEmitter>(() => new EventEmitter(), []);
   const state = useRef<UseReactComponentState>({ component, props: injectProps });
-  const reactComponent = useRef(createReactComponentComponent(state, emitter));
+  const reactComponent = useRef<React.ComponentType>(createReactComponentComponent(state, emitter));
 
   const forceRender = useCallback(() => {
     emitter.emit(EVENT_REACT_COMPONENT_PROPS_CHANGE);
