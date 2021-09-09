@@ -1,3 +1,12 @@
+## [0.2.8](https://github.com/limaofeng/sunmao/compare/v0.2.7...v0.2.8) (2021-09-09)
+
+
+### Bug Fixes
+
+* :bug: 解决组件外部参数透传BUG ([f5eb940](https://github.com/limaofeng/sunmao/commit/f5eb94028d2f42ca55de58ebc8ba5148dd7ed957))
+
+
+
 ## [0.2.7](https://github.com/limaofeng/sunmao/compare/v0.2.6...v0.2.7) (2021-09-02)
 
 
