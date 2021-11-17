@@ -1,3 +1,12 @@
+## [0.2.9](https://github.com/limaofeng/sunmao/compare/v0.2.8...v0.2.9) (2021-11-17)
+
+
+### Bug Fixes
+
+* 导出 sketch 中的 hooks 方法 ([3e81ce9](https://github.com/limaofeng/sunmao/commit/3e81ce927a55e5c45e23cafc8d38afd7b32ed2e5))
+
+
+
 ## [0.2.8](https://github.com/limaofeng/sunmao/compare/v0.2.7...v0.2.8) (2021-09-09)
 
 
