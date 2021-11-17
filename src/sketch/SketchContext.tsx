@@ -38,6 +38,9 @@ export class Sketch {
 
   on(eventName: SketchEventName, callback: EventCallback) {
     this.emitter.on(eventName, callback);
+    return () => {
+      this.emitter.off(eventName, callback);
+    };
   }
 
   trigger(eventName: SketchEventName, ...params: any) {

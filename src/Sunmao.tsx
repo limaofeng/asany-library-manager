@@ -68,13 +68,14 @@ class Sunmao {
     if (component.tags) {
       for (const tag of component.tags) {
         let rootTags = this.tags;
+        // eslint-disable-next-line no-loop-func
         tag.split('/').forEach((key, index, array) => {
           let subTag = rootTags.find(({ id }) => id === key);
           if (!subTag) {
             rootTags.push((subTag = { id: key, value: key, label: key, children: [] }));
           }
           rootTags = subTag.children;
-          if (array.length == index + 1) {
+          if (array.length === index + 1) {
             rootTags.push({
               ...root.info,
               value: root.info.id,
