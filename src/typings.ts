@@ -327,6 +327,7 @@ export interface IBlockData<T = any> {
   title: string;
   props?: T;
   update: UpdateFunc<T>;
+  component: string;
   customizer?: ICustomizer;
   version?: number;
 }
@@ -359,6 +360,7 @@ export type IBlockCoreData = {
   key: string;
   icon: string;
   title: string;
+  component: string;
   props: any;
 };
 

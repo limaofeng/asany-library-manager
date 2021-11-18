@@ -68,6 +68,7 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
       payload: {
         ...options,
         customizer: options.customizer || { fields: [] },
+        component: store.id,
         update: handleChange,
         click: handleClick,
         key,
