@@ -1,3 +1,12 @@
+## [0.2.11](https://github.com/limaofeng/sunmao/compare/v0.2.10...v0.2.11) (2021-11-18)
+
+
+### Features
+
+* 为 BlockCoreData 添加 title 属性 ([02b9bc4](https://github.com/limaofeng/sunmao/commit/02b9bc4fc0137b3e01b4326b458a4c689e64c4e7))
+
+
+
 ## [0.2.10](https://github.com/limaofeng/sunmao/compare/v0.2.9...v0.2.10) (2021-11-18)
 
 
