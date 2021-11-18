@@ -5,7 +5,7 @@ function Second() {
   const { key, props, update, Provider } = useBlock({
     key: 'Second',
     icon: '',
-    title: '',
+    title: 'Second',
     props: {
       title: 'Second',
     },

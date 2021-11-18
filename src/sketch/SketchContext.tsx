@@ -92,7 +92,13 @@ export class Sketch {
     if (!component) {
       throw new Error('component is null!');
     }
-    return component.store.getState().blocks.map(({ key, props }) => ({ key, props }));
+    return component.store.getState().blocks.map(({ key, title, icon, props }) => ({
+      key,
+      icon,
+      title,
+      props,
+      parentKey: key.includes('/') ? key.substring(0, key.lastIndexOf('/')) : undefined,
+    }));
   }
 
   useSelector(id: string) {

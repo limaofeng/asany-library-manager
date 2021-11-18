@@ -357,6 +357,8 @@ export interface IBlockState {
 
 export type IBlockCoreData = {
   key: string;
+  icon: string;
+  title: string;
   props: any;
 };
 

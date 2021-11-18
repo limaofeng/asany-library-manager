@@ -41,7 +41,7 @@ function TestSunmao() {
   sketch.on('block-click', async (id) => {
     console.log('all components', sketch.components);
 
-    console.log('block-click', id);
+    console.log('blocks', sketch.getComponentData(sketch.components[0].id));
     const block = sketch.getBlock(id);
     console.log('block:', block);
     console.log('html element:', document.getElementById(block.id));
