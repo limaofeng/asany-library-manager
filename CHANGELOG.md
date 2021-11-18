@@ -1,3 +1,12 @@
+## [0.2.12](https://github.com/limaofeng/sunmao/compare/v0.2.11...v0.2.12) (2021-11-18)
+
+
+### Features
+
+* block data 添加单独的 component 字段 ([9c35ce1](https://github.com/limaofeng/sunmao/commit/9c35ce16d2876fe3375e0b96a1d12f8171151e3f))
+
+
+
 ## [0.2.11](https://github.com/limaofeng/sunmao/compare/v0.2.10...v0.2.11) (2021-11-18)
 
 
