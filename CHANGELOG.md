@@ -1,3 +1,12 @@
+## [0.2.10](https://github.com/limaofeng/sunmao/compare/v0.2.9...v0.2.10) (2021-11-18)
+
+
+### Features
+
+* 添加获取组件的属性 ([8cfcc14](https://github.com/limaofeng/sunmao/commit/8cfcc144e81bfed7f946786e9ec0d297500602e4))
+
+
+
 ## [0.2.9](https://github.com/limaofeng/sunmao/compare/v0.2.8...v0.2.9) (2021-11-17)
 
 
