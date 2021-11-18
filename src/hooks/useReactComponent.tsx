@@ -70,6 +70,7 @@ export default function useReactComponent(id: string, injectProps: IBlockCoreDat
 
   const forceRender = useCallback(() => {
     emitter.emit(EVENT_REACT_COMPONENT_PROPS_CHANGE);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -78,6 +79,7 @@ export default function useReactComponent(id: string, injectProps: IBlockCoreDat
     }
     state.current.component = component;
     forceRender();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [component]);
 
   useDeepCompareEffect(() => {

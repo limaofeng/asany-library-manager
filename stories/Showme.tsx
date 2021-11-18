@@ -29,7 +29,7 @@ function Showme() {
   const { key, props, update, Provider } = useBlock({
     key: 'xxx',
     icon: '',
-    title: '',
+    title: 'sdfsdfsd',
     props: {
       title: 'xxx',
     },

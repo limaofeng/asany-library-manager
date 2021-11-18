@@ -25,15 +25,19 @@ type SketchEventName = 'block-click' | 'block-mouse-enter' | 'block-mouse-leave'
 
 export class Sketch {
   private emitter = new EventEmitter();
-  private components = new Map<string, ReactComponentData>();
+  private _components = new Map<string, ReactComponentData>();
 
   add(data: ReactComponentData) {
-    this.components.set(data.id, data);
+    this._components.set(data.id, data);
     return () => this.remove(data.id);
   }
 
   remove(id: string) {
-    this.components.delete(id);
+    this._components.delete(id);
+  }
+
+  get components() {
+    return Array.from(this._components.values());
   }
 
   on(eventName: SketchEventName, callback: EventCallback) {
@@ -49,17 +53,17 @@ export class Sketch {
 
   getBlock(key: string): IBlockData | undefined {
     const [id, blkey] = key.split(':');
-    const component = this.components.get(id);
+    const component = this._components.get(id);
     return component?.store.getState().blocks.find((item) => item.key === blkey);
   }
 
   getComponent(key: string): ReactComponentData | undefined {
     const [id] = key.split(':');
-    return this.components.get(id);
+    return this._components.get(id);
   }
 
   updateComponent(id: string, data: IUpdateBlockData[]) {
-    const component = this.components.get(id);
+    const component = this._components.get(id);
     if (!component) {
       return console.warn('component is null!');
     }
@@ -72,7 +76,7 @@ export class Sketch {
 
   updateBlock(id: string, props: any) {
     const [comid, blkey] = id.split(':');
-    const component = this.components.get(comid);
+    const component = this._components.get(comid);
     if (!component) {
       return console.warn('component is null!');
     }
@@ -84,7 +88,7 @@ export class Sketch {
   }
 
   getComponentData(id: string): IBlockCoreData[] {
-    const component = this.components.get(id);
+    const component = this._components.get(id);
     if (!component) {
       throw new Error('component is null!');
     }
