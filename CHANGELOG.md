@@ -1,3 +1,12 @@
+## [0.2.15](https://github.com/limaofeng/sunmao/compare/v0.2.14...v0.2.15) (2021-11-19)
+
+
+### Features
+
+* 添加 toBlockCoreDatas 工具方法 ([cba576b](https://github.com/limaofeng/sunmao/commit/cba576b9fec6a681f205899dc9d078abf5643178))
+
+
+
 ## [0.2.14](https://github.com/limaofeng/sunmao/compare/v0.2.13...v0.2.14) (2021-11-19)
 
 
