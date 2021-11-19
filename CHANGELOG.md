@@ -1,3 +1,12 @@
+## [0.2.13](https://github.com/limaofeng/sunmao/compare/v0.2.12...v0.2.13) (2021-11-19)
+
+
+### Features
+
+* useSelector 可以提前使用 ([7d5b3fb](https://github.com/limaofeng/sunmao/commit/7d5b3fbbe9d84eda664db3947031da8b854beb8e))
+
+
+
 ## [0.2.12](https://github.com/limaofeng/sunmao/compare/v0.2.11...v0.2.12) (2021-11-18)
 
 
