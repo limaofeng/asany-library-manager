@@ -1,3 +1,12 @@
+## [0.2.14](https://github.com/limaofeng/sunmao/compare/v0.2.13...v0.2.14) (2021-11-19)
+
+
+### Features
+
+* useSelector 优化 ([9eccf18](https://github.com/limaofeng/sunmao/commit/9eccf186bf9e32d88c75ace68ef0eeb20eef924f))
+
+
+
 ## [0.2.13](https://github.com/limaofeng/sunmao/compare/v0.2.12...v0.2.13) (2021-11-19)
 
 
