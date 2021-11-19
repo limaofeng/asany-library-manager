@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 
-import { EqualityFn, IReactComponentStoreContext, Selector, defaultEqualityFn } from '../typings';
+import {
+  EqualityFn,
+  IBlockCoreData,
+  IBlockData,
+  IReactComponentStoreContext,
+  Selector,
+  defaultEqualityFn,
+} from '../typings';
 
 import type { Sketch } from './SketchContext';
 
@@ -72,4 +79,15 @@ export function useInternalSelector<Selected>(
     store.subscribe(checkForUpdates);
   }, [checkForUpdates, store]);
   return selectedState;
+}
+
+export function toBlockCoreDatas(blocks: IBlockData[]): IBlockCoreData[] {
+  return blocks.map(({ key, title, icon, component, props }) => ({
+    key,
+    icon,
+    title,
+    props,
+    component,
+    parentKey: key.includes('/') ? key.substring(0, key.lastIndexOf('/')) : undefined,
+  }));
 }

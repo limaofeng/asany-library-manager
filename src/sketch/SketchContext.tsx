@@ -12,7 +12,7 @@ import {
   defaultEqualityFn,
 } from '../typings';
 
-import { useInternalSelector } from './utils';
+import { toBlockCoreDatas, useInternalSelector } from './utils';
 
 type ReactComponentData = {
   id: string;
@@ -102,14 +102,7 @@ export class Sketch {
     if (!component) {
       throw new Error('component is null!');
     }
-    return component.store.getState().blocks.map(({ key, title, icon, component, props }) => ({
-      key,
-      icon,
-      title,
-      props,
-      component,
-      parentKey: key.includes('/') ? key.substring(0, key.lastIndexOf('/')) : undefined,
-    }));
+    return toBlockCoreDatas(component.store.getState().blocks);
   }
 
   useSelector<Selected>(
