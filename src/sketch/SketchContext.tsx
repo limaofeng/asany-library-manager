@@ -112,11 +112,13 @@ export class Sketch {
     }));
   }
 
-  useSelector(id: string) {
+  useSelector<Selected>(
+    id: string,
+    selector: Selector<Selected>,
+    equalityFn: EqualityFn<Selected> = defaultEqualityFn
+  ) {
     const zhis = this;
-    return function <Selected>(selector: Selector<Selected>, equalityFn: EqualityFn<Selected> = defaultEqualityFn) {
-      return useInternalSelector(zhis, id, selector, equalityFn);
-    };
+    return useInternalSelector(zhis, id, selector, equalityFn);
   }
 }
 
