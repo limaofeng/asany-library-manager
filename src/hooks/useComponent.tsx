@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 
 import { EqualityFn, IComponentDefinition, defaultEqualityFn } from '../typings';
 
@@ -9,15 +9,17 @@ const useComponent = (name: string, equalityFn: EqualityFn<any> = defaultEqualit
   const [, forceRender] = useReducer((s) => s + 1, 0);
   const latestSelectedState = useRef<IComponentDefinition>();
   const selectedState = sunmao.getComponent(name);
-  const checkForUpdates = () => {
+  const checkForUpdates = useCallback(() => {
     const newSelectedState = sunmao.getComponent(name);
     if (equalityFn(newSelectedState!, latestSelectedState.current!)) {
       return;
     }
     latestSelectedState.current = newSelectedState;
     forceRender();
-  };
-  useEffect(() => sunmao.subscribe(checkForUpdates), [name]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => sunmao.subscribe(checkForUpdates), []);
   return selectedState;
 };
 

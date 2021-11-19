@@ -34,7 +34,7 @@ class TestLibrary {
 }
 
 function TestSunmao() {
-  const Component = useReactComponent('cn.asany.ui.sunmao.test.Showme');
+  const Component = useReactComponent('cn.asany.ui.sunmao.test.Showme', [], { id: '123' });
 
   const sketch = useSketch();
 

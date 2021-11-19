@@ -17,13 +17,13 @@ import { generateUUID, useDeepCompareEffect } from '../utils';
 
 import { BlockRootProvider } from './BlockContext';
 import reducers from './reducer';
-import { useInternalSelector } from './utils';
+import { useInternalStoreSelector } from './utils';
 
 export const ReactComponentContext = React.createContext<IReactComponentStoreContext>([] as any);
 
-function useStore(): IReactComponentStoreContext {
+function useStore(id?: string): IReactComponentStoreContext {
   const sketch = useSketch();
-  const [COMPONENT_ID] = useState(generateUUID());
+  const [COMPONENT_ID] = useState(id || generateUUID());
   const [state, dispatch] = useReducer<React.ReducerWithoutAction<IReactComponentState>>(reducers as any, {
     blocks: [],
   });
@@ -81,7 +81,7 @@ export function useSelector<Selected>(
   equalityFn: EqualityFn<Selected> = defaultEqualityFn
 ) {
   const store = useContext<IReactComponentStoreContext>(ReactComponentContext);
-  return useInternalSelector(store, selector, equalityFn);
+  return useInternalStoreSelector(store, selector, equalityFn);
 }
 
 function compact(data: IBlockData[]) {
@@ -89,8 +89,8 @@ function compact(data: IBlockData[]) {
 }
 
 export default function ReactComponentProvider(props: ReactComponentProviderProps) {
-  const { children, version, value } = props;
-  const store = useStore();
+  const { id, children, version, value } = props;
+  const store = useStore(id);
   const { dispatch } = store;
   useDeepCompareEffect(() => {
     if (!value || isEqual(compact(value), compact(store.getState().blocks))) {

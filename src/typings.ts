@@ -345,6 +345,7 @@ export type IReactComponentStoreContext = {
 };
 
 export interface ReactComponentProviderProps {
+  id?: string;
   children: React.ReactNode;
   value: IBlockData<any>[];
   version?: number;

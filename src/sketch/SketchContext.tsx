@@ -21,7 +21,13 @@ type ReactComponentData = {
 
 type EventCallback = (...params: any) => void;
 
-type SketchEventName = 'block-click' | 'block-mouse-enter' | 'block-mouse-leave';
+type SketchEventName =
+  | 'block-click'
+  | 'block-mouse-enter'
+  | 'block-mouse-leave'
+  | 'add-component'
+  | 'remove-component'
+  | 'update-component';
 
 export class Sketch {
   private emitter = new EventEmitter();
@@ -29,11 +35,13 @@ export class Sketch {
 
   add(data: ReactComponentData) {
     this._components.set(data.id, data);
+    this.trigger('add-component');
     return () => this.remove(data.id);
   }
 
   remove(id: string) {
     this._components.delete(id);
+    this.trigger('remove-component');
   }
 
   get components() {
@@ -72,6 +80,7 @@ export class Sketch {
       type: 'UpdateAllBlockProps',
       payload: data,
     });
+    this.trigger('update-component');
   }
 
   updateBlock(id: string, props: any) {
@@ -85,6 +94,7 @@ export class Sketch {
       type: 'UpdateBlockProps',
       payload: { key: blkey, props },
     });
+    this.trigger('update-component');
   }
 
   getComponentData(id: string): IBlockCoreData[] {
@@ -103,12 +113,9 @@ export class Sketch {
   }
 
   useSelector(id: string) {
-    const com = this.getComponent(id);
-    if (!com) {
-      throw new Error('component is null!');
-    }
+    const zhis = this;
     return function <Selected>(selector: Selector<Selected>, equalityFn: EqualityFn<Selected> = defaultEqualityFn) {
-      return useInternalSelector(com.store, selector, equalityFn);
+      return useInternalSelector(zhis, id, selector, equalityFn);
     };
   }
 }

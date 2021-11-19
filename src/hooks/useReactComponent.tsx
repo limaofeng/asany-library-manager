@@ -25,6 +25,7 @@ type ExternalProps = {
 };
 
 function createReactComponentComponent(
+  id: string | undefined,
   state: React.RefObject<UseReactComponentState>,
   emitter: EventEmitter
 ): React.ComponentType {
@@ -55,18 +56,18 @@ function createReactComponentComponent(
     }, [externalProps]);
 
     return (
-      <ReactComponentProvider value={props} version={version}>
+      <ReactComponentProvider id={id} value={props} version={version}>
         {component && React.createElement(component.component, passthroughProps, children)}
       </ReactComponentProvider>
     );
   };
 }
 
-export default function useReactComponent(id: string, injectProps: IBlockCoreData[] = [], _?: IOptions) {
+export default function useReactComponent(id: string, injectProps: IBlockCoreData[] = [], options?: IOptions) {
   const component = useComponent(id);
   const emitter = useMemo<EventEmitter>(() => new EventEmitter(), []);
   const state = useRef<UseReactComponentState>({ component, props: injectProps });
-  const reactComponent = useRef<React.ComponentType>(createReactComponentComponent(state, emitter));
+  const reactComponent = useRef<React.ComponentType>(createReactComponentComponent(options?.id, state, emitter));
 
   const forceRender = useCallback(() => {
     emitter.emit(EVENT_REACT_COMPONENT_PROPS_CHANGE);
