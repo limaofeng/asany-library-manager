@@ -21,11 +21,12 @@ export default function component(metadata?: ComponentMetadata) {
     }
     const getValue = function (this: any) {
       const retval = method.apply(this);
-      if (metadata && metadata.name) {
+      if (metadata) {
         for (const key of Object.keys(metadata)) {
           Reflect.defineMetadata(key, (metadata as any)[key], retval);
         }
-      } else {
+      }
+      if (!metadata?.name) {
         Reflect.defineMetadata('name', upperFirst(camelCase(propertyKey)), retval);
       }
       return retval;

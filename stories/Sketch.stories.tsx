@@ -24,7 +24,14 @@ export default meta;
 
 @library({ name: 'test', description: '测试库', namespace: 'cn.asany.ui.sunmao.test' })
 class TestLibrary {
-  @component()
+  @component({
+    symbols: [
+      {
+        title: 'sdfsdf',
+        selector: () => true,
+      },
+    ],
+  })
   showme = Showme;
 
   @component({ name: 'Boot' })
