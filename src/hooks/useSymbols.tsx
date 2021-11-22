@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 
 import type Sunmao from '../Sunmao';
 import {
@@ -60,22 +60,24 @@ function useSymbols(id: string): ComponentGroup[] {
 
   const [, forceRender] = useReducer((s) => s + 1, 0);
   // 存储上一次selector的返回值。
-  const latestSelectedState = useRef<ComponentGroup[]>([]);
+  const latestState = useRef<ComponentGroup[]>([]);
 
   useEffect(() => {
     if (component == null) {
       return;
     }
-    return sunmao.subscribe(() => {
-      latestSelectedState.current = (component.symbols || [])
+    const updateState = () => {
+      latestState.current = (component.symbols || [])
         .map(buildComponentDragObject)
         .map((item) => buildComponentGroup(item, sunmao));
       forceRender();
-    });
+    };
+    updateState();
+    return sunmao.subscribe(updateState);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [component]);
 
-  return latestSelectedState.current;
+  return latestState.current;
 }
 
 export default useSymbols;
