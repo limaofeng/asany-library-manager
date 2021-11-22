@@ -8,7 +8,7 @@
     "src"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=16"
   },
   "scripts": {
     "start": "tsdx watch",
@@ -27,7 +27,7 @@
     "postversion": "git push --follow-tags"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=17"
   },
   "husky": {
     "hooks": {
@@ -55,34 +55,38 @@
     }
   ],
   "devDependencies": {
-    "@babel/core": "^7.15.0",
-    "@commitlint/cli": "^13.1.0",
-    "@commitlint/config-conventional": "^13.1.0",
-    "@size-limit/preset-small-lib": "^5.0.3",
-    "@storybook/addon-essentials": "^6.3.7",
+    "@babel/core": "^7.16.0",
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
+    "@size-limit/preset-small-lib": "^7.0.3",
+    "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-info": "^5.3.21",
-    "@storybook/addon-links": "^6.3.7",
-    "@storybook/addons": "^6.3.7",
-    "@storybook/react": "^6.3.7",
-    "@types/lodash-es": "^4.17.4",
-    "@types/react": "^17.0.19",
-    "@types/react-dom": "^17.0.9",
-    "babel-loader": "^8.2.2",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/addons": "^6.3.12",
+    "@storybook/react": "^6.3.12",
+    "@types/lodash-es": "^4.17.5",
+    "@types/react": "^17.0.36",
+    "@types/react-dom": "^17.0.11",
+    "babel-loader": "^8.2.3",
     "conventional-changelog-cli": "^2.1.1",
     "eslint-plugin-prettier": "^3.4.1",
-    "husky": "^7.0.1",
-    "less-loader": "^10.0.1",
+    "husky": "^7.0.4",
+    "less": "^4.1.2",
+    "less-loader": "^7.3.0",
     "pinst": "^2.1.6",
+    "postcss": "^8.3.11",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-is": "^17.0.2",
     "rollup-plugin-postcss": "^4.0.1",
-    "size-limit": "^5.0.3",
+    "size-limit": "^7.0.3",
     "tsdx": "^0.14.1",
     "tslib": "^2.3.1",
     "typescript": "^4.3.5"
   },
   "dependencies": {
+    "classnames": "^2.3.1",
     "lodash-es": "^4.17.21",
     "reflect-metadata": "^0.1.13"
   },
