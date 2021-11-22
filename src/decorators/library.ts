@@ -4,7 +4,7 @@ import { getMetadata } from '../utils';
 export default function library(metadata: LibraryMetadata, loadComponentsMethod?: string) {
   return function (target: any) {
     for (const key of Object.keys(metadata)) {
-      Reflect.defineMetadata(key, metadata[key], target);
+      Reflect.defineMetadata(key, (metadata as any)[key], target);
     }
 
     const id = Reflect.getMetadata('id', target);

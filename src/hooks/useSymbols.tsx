@@ -11,8 +11,7 @@ import {
 import { generateUUID } from '../utils';
 
 import useComponent from './useComponent';
-
-import { useSunmao } from '.';
+import useSunmao from './useSunmao';
 
 const COMPONENT = 'component';
 
