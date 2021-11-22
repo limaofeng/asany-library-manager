@@ -1,3 +1,12 @@
+## [0.2.19](https://github.com/limaofeng/sunmao/compare/v0.2.18...v0.2.19) (2021-11-22)
+
+
+### Features
+
+* 添加 symbols ([b9c2e4e](https://github.com/limaofeng/sunmao/commit/b9c2e4e7de5d2f9f985ca6643347ed040bcc55a1))
+
+
+
 ## [0.2.18](https://github.com/limaofeng/sunmao/compare/v0.2.17...v0.2.18) (2021-11-22)
 
 
