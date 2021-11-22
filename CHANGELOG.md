@@ -1,3 +1,12 @@
+## [0.2.23](https://github.com/limaofeng/sunmao/compare/v0.2.22...v0.2.23) (2021-11-22)
+
+
+### Bug Fixes
+
+* 修复装饰器，属性识别BUG ([00ba4e0](https://github.com/limaofeng/sunmao/commit/00ba4e097eb2c7fa92d2e87a58cd1aec989478eb))
+
+
+
 ## [0.2.22](https://github.com/limaofeng/sunmao/compare/v0.2.21...v0.2.22) (2021-11-22)
 
 
