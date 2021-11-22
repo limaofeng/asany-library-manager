@@ -206,12 +206,25 @@ export type IComponentDragObject = {
 };
 
 export interface IComponentDefinition {
-  // 组件名称
+  /**
+   * 组件名称
+   */
   id: string;
+  /**
+   * 名称
+   */
   name: string;
+  /**
+   * 图标
+   */
   icon?: string;
+  /**
+   * 组件
+   */
   component: ComponentType;
-  // 组件标签
+  /**
+   *  组件标签
+   */
   tags?: string[];
   /**
    * 权重
@@ -244,10 +257,6 @@ export type LibraryMetadata = {
    * 支持通过配置 namespace 减少每个组件上的路径设置
    */
   namespace?: string;
-  /**
-   * 预留
-   */
-  [key: string]: any;
 };
 
 export interface ComponentMetadata {
@@ -269,9 +278,9 @@ export interface ComponentMetadata {
    */
   tags?: string[];
   /**
-   * 预留
+   * 可以使用的子组件 (用于拖拽支持)
    */
-  [key: string]: any;
+  symbols?: IComponentDragObject[];
 }
 
 export const METADATA_KEY_COMPONENTS = '_COMPONENTS';
