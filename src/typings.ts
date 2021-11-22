@@ -169,10 +169,41 @@ export interface IGroup {
   fields: IField[];
 }
 
-export interface IComponentVersion {
+export interface ComponentDragObject {
+  /**
+   * ID
+   */
   id: string;
-  version: string;
+  /**
+   * Drag Type
+   */
+  type: string;
+  /**
+   * 名称
+   */
+  name: string;
+  /**
+   * 组件
+   */
+  component: string;
 }
+
+export type ComponentGroup = {
+  title: string;
+  type: string;
+  createDragObject: CreateDragObjectFunc;
+  components: IComponentDefinition[];
+};
+
+export type CreateDragObjectFunc = (component: IComponentDefinition) => ComponentDragObject;
+
+export type IComponentDragObject = {
+  title: string;
+  type?: string;
+  sorter?: ComponentSorter;
+  selector: string | ComponentSelector;
+  object?: CreateDragObjectFunc;
+};
 
 export interface IComponentDefinition {
   // 组件名称
@@ -182,21 +213,14 @@ export interface IComponentDefinition {
   component: ComponentType;
   // 组件标签
   tags?: string[];
-  versions?: IComponentVersion[];
-  drag?: {
-    size: {
-      w: number;
-      h: number;
-    };
-  };
   /**
    * 权重
    */
   boost?: number;
   /**
-   * 可以使用的子组件
+   * 可以使用的子组件 (用于拖拽支持)
    */
-  symbols?: string[];
+  symbols?: IComponentDragObject[];
   /**
    * 配置属性定义
    */
