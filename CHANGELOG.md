@@ -1,3 +1,12 @@
+## [0.2.18](https://github.com/limaofeng/sunmao/compare/v0.2.17...v0.2.18) (2021-11-22)
+
+
+### Features
+
+* 导出 useSymbols ([339cca4](https://github.com/limaofeng/sunmao/commit/339cca4b1f6f0f121c46a05e6fae7ee5d1d8fae5))
+
+
+
 ## [0.2.17](https://github.com/limaofeng/sunmao/compare/v0.2.16...v0.2.17) (2021-11-22)
 
 
