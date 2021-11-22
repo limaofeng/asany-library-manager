@@ -1,3 +1,12 @@
+## [0.2.20](https://github.com/limaofeng/sunmao/compare/v0.2.19...v0.2.20) (2021-11-22)
+
+
+### Bug Fixes
+
+* component 改变时，触发一次计算 ([b2eb2ac](https://github.com/limaofeng/sunmao/commit/b2eb2accc31c5293d092b059c6e4786168b66ce3))
+
+
+
 ## [0.2.19](https://github.com/limaofeng/sunmao/compare/v0.2.18...v0.2.19) (2021-11-22)
 
 
