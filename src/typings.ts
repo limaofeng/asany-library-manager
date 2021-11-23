@@ -404,6 +404,11 @@ export interface ReactComponentProviderProps {
   version?: number;
 }
 
+export interface IComponentBlockData {
+  key: string;
+  props: any;
+}
+
 export interface IBlockState {
   version: number;
   definition: IComponentDefinition;
