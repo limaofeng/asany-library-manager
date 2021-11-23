@@ -227,6 +227,10 @@ export interface IComponentDefinition {
    */
   icon?: string;
   /**
+   * 封面图
+   */
+  cover?: string;
+  /**
    * 组件
    */
   component: ComponentType;
@@ -277,6 +281,10 @@ export interface ComponentMetadata {
    * 图标
    */
   icon?: string;
+  /**
+   * 封面图
+   */
+  cover?: string;
   /**
    * 组件标题
    */
