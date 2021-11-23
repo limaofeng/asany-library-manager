@@ -1,3 +1,3 @@
 export { default as ReactComponentProvider } from './ReactComponentProvider';
-export { SketchProvider } from './SketchContext';
+export { SketchProvider, Sketch } from './SketchContext';
 export * from './ReactComponentProvider';
