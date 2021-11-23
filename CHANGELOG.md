@@ -1,3 +1,12 @@
+## [0.2.25](https://github.com/limaofeng/sunmao/compare/v0.2.24...v0.2.25) (2021-11-23)
+
+
+### Features
+
+* 添加 cover 字段 ([b92aeef](https://github.com/limaofeng/sunmao/commit/b92aeef7eb8d6b3893f0ea6af9951bc6c12bed23))
+
+
+
 ## [0.2.24](https://github.com/limaofeng/sunmao/compare/v0.2.23...v0.2.24) (2021-11-23)
 
 
