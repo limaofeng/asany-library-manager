@@ -1,3 +1,12 @@
+## [0.2.27](https://github.com/limaofeng/sunmao/compare/v0.2.26...v0.2.27) (2021-11-23)
+
+
+### Features
+
+* 添加 IComponentBlockData 类型 ([31a9b60](https://github.com/limaofeng/sunmao/commit/31a9b60706529a336e249fa8beb6dbb6dbc74781))
+
+
+
 ## [0.2.26](https://github.com/limaofeng/sunmao/compare/v0.2.25...v0.2.26) (2021-11-23)
 
 
