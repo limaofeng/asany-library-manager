@@ -1,3 +1,12 @@
+## [0.2.24](https://github.com/limaofeng/sunmao/compare/v0.2.23...v0.2.24) (2021-11-23)
+
+
+### Features
+
+* 添加 title 与 description ([4e274cc](https://github.com/limaofeng/sunmao/commit/4e274cc978bcc8a0a5568b04b5f4c86cb27ad430))
+
+
+
 ## [0.2.23](https://github.com/limaofeng/sunmao/compare/v0.2.22...v0.2.23) (2021-11-22)
 
 
