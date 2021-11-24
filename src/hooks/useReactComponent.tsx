@@ -29,7 +29,7 @@ function createReactComponentComponent(
   state: React.RefObject<UseReactComponentState>,
   emitter: EventEmitter
 ): React.ComponentType {
-  return function (externalProps: ExternalProps) {
+  return React.forwardRef(function (externalProps: ExternalProps, ref: any) {
     const { children, ...passthroughProps } = externalProps;
     const [version, forceRender] = useReducer((s) => s + 1, 0);
     const cache = useRef<any>(externalProps || {});
@@ -57,10 +57,10 @@ function createReactComponentComponent(
 
     return (
       <ReactComponentProvider id={id} value={props} version={version}>
-        {component && React.createElement(component.component, passthroughProps, children)}
+        {component && React.createElement(component.component, { ...passthroughProps, ref } as any, children)}
       </ReactComponentProvider>
     );
-  };
+  });
 }
 
 export default function useReactComponent(id: string, injectProps: IComponentBlockData[] = [], options?: IOptions) {
