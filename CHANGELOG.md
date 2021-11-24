@@ -1,3 +1,12 @@
+## [0.2.28](https://github.com/limaofeng/sunmao/compare/v0.2.27...v0.2.28) (2021-11-24)
+
+
+### Features
+
+* 删除 IComponentDefinition id 避免混淆， name 为唯一标识 ([ca1acf8](https://github.com/limaofeng/sunmao/commit/ca1acf8a68cf083e7b528b3a7c13208aede61ac5))
+
+
+
 ## [0.2.27](https://github.com/limaofeng/sunmao/compare/v0.2.26...v0.2.27) (2021-11-23)
 
 
