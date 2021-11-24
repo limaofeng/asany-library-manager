@@ -30,8 +30,8 @@ function buildComponentDragObject(item: IComponentDragObject) {
 const buildCreateDragObject = (type: string) => (component: IComponentDefinition): ComponentDragObject => {
   return {
     id: generateUUID(),
-    component: component.id,
-    name: component.name,
+    component: component.name,
+    name: component.title!,
     type,
   };
 };

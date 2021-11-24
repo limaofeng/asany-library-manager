@@ -207,10 +207,6 @@ export type IComponentDragObject = {
 
 export interface IComponentDefinition {
   /**
-   * 组件名称
-   */
-  id: string;
-  /**
    * 名称
    */
   name: string;
