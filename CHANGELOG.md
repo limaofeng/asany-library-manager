@@ -1,3 +1,12 @@
+## [0.2.29](https://github.com/limaofeng/sunmao/compare/v0.2.28...v0.2.29) (2021-11-24)
+
+
+### Features
+
+* createReactComponentComponent 支持 ref ([97e5e68](https://github.com/limaofeng/sunmao/commit/97e5e684c3a2cc4caf095a8f145c419e4de3931a))
+
+
+
 ## [0.2.28](https://github.com/limaofeng/sunmao/compare/v0.2.27...v0.2.28) (2021-11-24)
 
 
