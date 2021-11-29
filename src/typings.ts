@@ -465,4 +465,15 @@ export type UseBlockCache<T, P> = {
   result: IUseBlock<T, P>;
 };
 
+export type DataSourceResult<R> = {
+  loading?: boolean;
+  data?: R;
+  error?: any;
+};
+
+export interface DataSourceLoader<P = any> {
+  type: string;
+  load<T>(param: P): Promise<DataSourceResult<T>>;
+}
+
 export const defaultEqualityFn = (a: any, b: any) => a === b;

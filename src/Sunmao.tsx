@@ -3,6 +3,7 @@ import { ComponentType } from 'react';
 import {
   ComponentSelector,
   ComponentTreeNode,
+  DataSourceLoader,
   IComponentCascader,
   IComponentDefinition,
   ILibraryDefinition,
@@ -19,6 +20,7 @@ class Sunmao {
   private listeners: SubscribeCallback[] = [];
   private templates = new Map<string, ITemplate>();
   private components = new Map<string, IComponentDefinition>();
+  private dataSourceLoaders = new Map<string, DataSourceLoader<any>>();
   private library: AggregationLibrary = {};
   private tags: any[] = [];
 
@@ -27,6 +29,15 @@ class Sunmao {
       return this.updateComponent(item, false, false, x);
     }, this.library);
     this.dispatchSubscribe();
+  }
+
+  addDataSourceLoader(loader: DataSourceLoader) {
+    this.dataSourceLoaders.set(loader.type, loader);
+    this.dispatchSubscribe();
+  }
+
+  getDataSourceLoader(type: string) {
+    return this.dataSourceLoaders.get(type);
   }
 
   /**
