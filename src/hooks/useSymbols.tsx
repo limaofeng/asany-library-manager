@@ -27,14 +27,16 @@ function buildComponentDragObject(item: IComponentDragObject) {
   return { ...item };
 }
 
-const buildCreateDragObject = (type: string) => (component: IComponentDefinition): ComponentDragObject => {
-  return {
-    id: generateUUID(),
-    component: component.name,
-    name: component.title!,
-    type,
+const buildCreateDragObject =
+  (type: string) =>
+  (component: IComponentDefinition): ComponentDragObject => {
+    return {
+      id: generateUUID(),
+      component: component.name,
+      name: component.title!,
+      type,
+    };
   };
-};
 
 function defaultComponentSorter({ boost: a = 0 }: IComponentDefinition, { boost: b = 0 }: IComponentDefinition) {
   return a - b;

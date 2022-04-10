@@ -465,15 +465,37 @@ export type UseBlockCache<T, P> = {
   result: IUseBlock<T, P>;
 };
 
-export type DataSourceResult<R> = {
+export type DataSet<R> = {
   loading?: boolean;
-  data?: R;
+  data?: R[];
   error?: any;
 };
 
+export type DataField = {
+  id: string;
+};
+
+export type DataFilter = {
+  id: string;
+};
+
+export type DatasetConfig = {
+  fields: DataField[];
+  filters: DataFilter[];
+};
+
+export interface GraphQLDatasetConfig {
+  gql: string;
+  variables?: any;
+}
+
 export interface DataSourceLoader<P = any> {
   type: string;
-  load<T>(param: P): Promise<DataSourceResult<T>>;
+  load(param?: P): DataSource;
+}
+
+export interface DataSource {
+  dataset<T, P>(param: P): Promise<DataSet<T>>;
 }
 
 export const defaultEqualityFn = (a: any, b: any) => a === b;
