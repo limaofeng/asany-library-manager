@@ -24,12 +24,12 @@ type ExternalProps = {
   [key: string]: any;
 };
 
-function createReactComponentComponent(
+function createReactComponentComponent<T>(
   id: string | undefined,
   state: React.RefObject<UseReactComponentState>,
   emitter: EventEmitter
-): React.ComponentType {
-  return React.forwardRef(function (externalProps: ExternalProps, ref: any) {
+): React.ComponentType<T> {
+  return React.forwardRef<any, any>(function (externalProps: ExternalProps, ref: any) {
     const { children, ...passthroughProps } = externalProps;
     const [version, forceRender] = useReducer((s) => s + 1, 0);
     const cache = useRef<any>(externalProps || {});
@@ -63,11 +63,15 @@ function createReactComponentComponent(
   });
 }
 
-export default function useReactComponent(id: string, injectProps: IComponentBlockData[] = [], options?: IOptions) {
+export default function useReactComponent<T = ExternalProps>(
+  id: string,
+  injectProps: IComponentBlockData[] = [],
+  options?: IOptions
+) {
   const component = useComponent(id);
   const emitter = useMemo<EventEmitter>(() => new EventEmitter(), []);
   const state = useRef<UseReactComponentState>({ component, props: injectProps });
-  const reactComponent = useRef<React.ComponentType>(createReactComponentComponent(options?.id, state, emitter));
+  const reactComponent = useRef<React.ComponentType<T>>(createReactComponentComponent(options?.id, state, emitter));
 
   const forceRender = useCallback(() => {
     emitter.emit(EVENT_REACT_COMPONENT_PROPS_CHANGE);
