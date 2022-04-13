@@ -1,3 +1,12 @@
+## [0.2.31](https://github.com/limaofeng/sunmao/compare/v0.2.30...v0.2.31) (2022-04-13)
+
+
+### Bug Fixes
+
+* useReactComponent 添加类型 ([390033a](https://github.com/limaofeng/sunmao/commit/390033a9549776a8f1cb6d1f4575424868e0990a))
+
+
+
 ## [0.2.30](https://github.com/limaofeng/sunmao/compare/v0.2.29...v0.2.30) (2022-04-10)
 
 
