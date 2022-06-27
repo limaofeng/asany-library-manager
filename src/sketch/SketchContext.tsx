@@ -30,6 +30,7 @@ type SketchEventName =
   | 'update-component';
 
 export class Sketch {
+  private dev = false;
   private emitter = new EventEmitter();
   private _components = new Map<string, ReactComponentData>();
 
@@ -37,6 +38,14 @@ export class Sketch {
     this._components.set(data.id, data);
     this.trigger('add-component');
     return () => this.remove(data.id);
+  }
+
+  setDev(dev: boolean) {
+    this.dev = dev;
+  }
+
+  isDev() {
+    return this.dev;
   }
 
   remove(id: string) {

@@ -398,6 +398,7 @@ export interface ReactComponentProviderProps {
   children: React.ReactNode;
   value: IBlockData<any>[];
   version?: number;
+  dev: boolean;
 }
 
 export interface IComponentBlockData {

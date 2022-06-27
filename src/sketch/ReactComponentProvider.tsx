@@ -21,7 +21,7 @@ import { useInternalStoreSelector } from './utils';
 
 export const ReactComponentContext = React.createContext<IReactComponentStoreContext>([] as any);
 
-function useStore(id?: string): IReactComponentStoreContext {
+function useStore(id: string, dev: boolean): IReactComponentStoreContext {
   const sketch = useSketch();
   const [COMPONENT_ID] = useState(id || generateUUID());
   const [state, dispatch] = useReducer<React.ReducerWithoutAction<IReactComponentState>>(reducers as any, {
@@ -66,8 +66,11 @@ function useStore(id?: string): IReactComponentStoreContext {
     handleDispatchSubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => sketch.add({ id: COMPONENT_ID, store }), []);
+  useEffect(() => {
+    sketch.setDev(dev);
+    sketch.add({ id: COMPONENT_ID, store });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return store;
 }
 
@@ -89,8 +92,8 @@ function compact(data: IBlockData[]) {
 }
 
 export default function ReactComponentProvider(props: ReactComponentProviderProps) {
-  const { id, children, version, value } = props;
-  const store = useStore(id);
+  const { id, children, version, value, dev } = props;
+  const store = useStore(id!, dev);
   const { dispatch } = store;
   useDeepCompareEffect(() => {
     if (!value || isEqual(compact(value), compact(store.getState().blocks))) {

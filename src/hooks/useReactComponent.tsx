@@ -12,6 +12,7 @@ const EVENT_REACT_COMPONENT_PROPS_CHANGE = 'EVENT_REACT_COMPONENT_PROPS_CHANGE';
 
 interface IOptions {
   id: string;
+  dev: boolean;
 }
 
 interface UseReactComponentState {
@@ -27,7 +28,8 @@ type ExternalProps = {
 function createReactComponentComponent<T>(
   id: string | undefined,
   state: React.RefObject<UseReactComponentState>,
-  emitter: EventEmitter
+  emitter: EventEmitter,
+  dev: boolean
 ): React.ComponentType<T> {
   return React.forwardRef<any, any>(function (externalProps: ExternalProps, ref: any) {
     const { children, ...passthroughProps } = externalProps;
@@ -56,7 +58,7 @@ function createReactComponentComponent<T>(
     }, [externalProps]);
 
     return (
-      <ReactComponentProvider id={id} value={props} version={version}>
+      <ReactComponentProvider id={id} value={props} dev={dev} version={version}>
         {component && React.createElement(component.component, { ...passthroughProps, ref } as any, children)}
       </ReactComponentProvider>
     );
@@ -71,7 +73,9 @@ export default function useReactComponent<T = ExternalProps>(
   const component = useComponent(id);
   const emitter = useMemo<EventEmitter>(() => new EventEmitter(), []);
   const state = useRef<UseReactComponentState>({ component, props: injectProps });
-  const reactComponent = useRef<React.ComponentType<T>>(createReactComponentComponent(options?.id, state, emitter));
+  const reactComponent = useRef<React.ComponentType<T>>(
+    createReactComponentComponent(options?.id, state, emitter, options?.dev || false)
+  );
 
   const forceRender = useCallback(() => {
     emitter.emit(EVENT_REACT_COMPONENT_PROPS_CHANGE);
