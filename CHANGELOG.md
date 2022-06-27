@@ -1,3 +1,12 @@
+## [0.2.33](https://github.com/limaofeng/sunmao/compare/v0.2.32...v0.2.33) (2022-06-27)
+
+
+### Features
+
+* 状态中添加 dev 标识， 只有编辑时为 true，其他情况下为 false ([b9b99f4](https://github.com/limaofeng/sunmao/commit/b9b99f4452a6574054ae1c62b735553d4d927ee3))
+
+
+
 ## [0.2.32](https://github.com/limaofeng/sunmao/compare/v0.2.31...v0.2.32) (2022-06-27)
 
 
