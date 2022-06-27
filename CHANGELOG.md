@@ -1,3 +1,12 @@
+## [0.2.32](https://github.com/limaofeng/sunmao/compare/v0.2.31...v0.2.32) (2022-06-27)
+
+
+### Features
+
+* 暴露 useBlockContext ([dc39c0f](https://github.com/limaofeng/sunmao/commit/dc39c0fada797b9eadc6d08dbcf92232c6dfbb49))
+
+
+
 ## [0.2.31](https://github.com/limaofeng/sunmao/compare/v0.2.30...v0.2.31) (2022-04-13)
 
 
