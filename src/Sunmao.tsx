@@ -89,7 +89,7 @@ class Sunmao {
           if (array.length === index + 1) {
             rootTags.push({
               ...root.info,
-              value: root.info.id,
+              value: root.info.name,
               label: root.info.title || root.info.name,
             });
           }
