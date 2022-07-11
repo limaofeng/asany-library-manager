@@ -12,7 +12,7 @@ const EVENT_REACT_COMPONENT_PROPS_CHANGE = 'EVENT_REACT_COMPONENT_PROPS_CHANGE';
 
 interface IOptions {
   id: string;
-  dev: boolean;
+  dev?: boolean;
 }
 
 interface UseReactComponentState {
