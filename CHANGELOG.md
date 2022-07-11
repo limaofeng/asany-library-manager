@@ -1,3 +1,12 @@
+## [0.2.34](https://github.com/limaofeng/sunmao/compare/v0.2.33...v0.2.34) (2022-07-11)
+
+
+### Features
+
+* 提取标签时, label = title ([34884d8](https://github.com/limaofeng/sunmao/commit/34884d8740250c67bf8ef844f25c8631e9b399a8))
+
+
+
 ## [0.2.33](https://github.com/limaofeng/sunmao/compare/v0.2.32...v0.2.33) (2022-06-27)
 
 
