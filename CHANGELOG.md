@@ -1,3 +1,12 @@
+## [0.2.35](https://github.com/limaofeng/sunmao/compare/v0.2.34...v0.2.35) (2022-07-11)
+
+
+### Bug Fixes
+
+* component 详情 value = name ([28e2ad1](https://github.com/limaofeng/sunmao/commit/28e2ad1f274b6cd67d3aaedb42db7d64239e94c5))
+
+
+
 ## [0.2.34](https://github.com/limaofeng/sunmao/compare/v0.2.33...v0.2.34) (2022-07-11)
 
 
