@@ -90,7 +90,7 @@ class Sunmao {
             rootTags.push({
               ...root.info,
               value: root.info.id,
-              label: root.info.name,
+              label: root.info.title || root.info.name,
             });
           }
         });
