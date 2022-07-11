@@ -1,3 +1,12 @@
+## [0.2.36](https://github.com/limaofeng/sunmao/compare/v0.2.35...v0.2.36) (2022-07-11)
+
+
+### Bug Fixes
+
+* useReactComponent / options / dev 非必填 ([420d48c](https://github.com/limaofeng/sunmao/commit/420d48cecd3321026fa7f0a04dee04f1b539cb67))
+
+
+
 ## [0.2.35](https://github.com/limaofeng/sunmao/compare/v0.2.34...v0.2.35) (2022-07-11)
 
 
