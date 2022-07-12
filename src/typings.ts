@@ -157,8 +157,8 @@ interface PluginOptions {
 }
 
 export interface ComponentTreeNode {
-  id: string;
-  name: string;
+  value: string;
+  label: string;
   children: ComponentTreeNode[];
 }
 
