@@ -7,15 +7,14 @@ export default function library(metadata: LibraryMetadata, loadComponentsMethod?
       Reflect.defineMetadata(key, (metadata as any)[key], target);
     }
 
-    const id = Reflect.getMetadata('id', target);
     const name = Reflect.getMetadata('name', target);
     const description = Reflect.getMetadata('description', target);
 
     const components = Reflect.getMetadata(METADATA_KEY_COMPONENTS, target.prototype) || [];
 
     return class extends target implements ILibraryDefinition {
-      id = id;
       name = name;
+      tags = [];
       description = description;
       get components(): IComponentDefinition[] {
         if (loadComponentsMethod) {
@@ -28,7 +27,7 @@ export default function library(metadata: LibraryMetadata, loadComponentsMethod?
             Reflect.deleteMetadata('name', rc);
             Reflect.defineMetadata('name', metadata.namespace + '.' + name, rc);
           }
-          return { ...getMetadata(rc), component: rc };
+          return { ...getMetadata(rc), component: rc, library: this };
         });
       }
     };

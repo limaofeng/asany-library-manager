@@ -69,6 +69,7 @@
     "@types/lodash-es": "^4.17.5",
     "@types/react": "^17.0.36",
     "@types/react-dom": "^17.0.11",
+    "@typescript-eslint/typescript-estree": "^5.30.6",
     "babel-loader": "^8.2.3",
     "conventional-changelog-cli": "^2.1.1",
     "eslint-plugin-prettier": "^3.4.1",
@@ -89,12 +90,14 @@
   },
   "dependencies": {
     "classnames": "^2.3.1",
+    "dexie": "^3.2.0",
     "lodash-es": "^4.17.21",
     "reflect-metadata": "^0.1.13"
   },
   "resolutions": {
     "**/@typescript-eslint/eslint-plugin": "^4.1.1",
-    "**/@typescript-eslint/parser": "^4.1.1"
+    "**/@typescript-eslint/parser": "^4.1.1",
+    "**/@typescript-eslint/typescript-estree": "^5.30.5"
   },
   "jest": {
     "moduleNameMapper": {

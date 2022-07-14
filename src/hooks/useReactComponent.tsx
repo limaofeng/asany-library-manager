@@ -69,7 +69,7 @@ export default function useReactComponent<T = ExternalProps>(
   id: string,
   injectProps: IComponentBlockData[] = [],
   options?: IOptions
-) {
+): React.ComponentType<T> {
   const component = useComponent(id);
   const emitter = useMemo<EventEmitter>(() => new EventEmitter(), []);
   const state = useRef<UseReactComponentState>({ component, props: injectProps });

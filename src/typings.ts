@@ -4,19 +4,9 @@ export interface ReactComponent {
   [key: string]: React.ReactElement | ReactComponent | any;
 }
 
-export class AbstractLibrary {
-  id: string;
-  name: string;
-
-  constructor(id: string, name: string) {
-    this.id = id;
-    this.name = name;
-  }
-}
-
 export interface ILibraryDefinition {
-  id: string;
   name: string;
+  tags: ComponentTreeNode[];
   components: IComponentDefinition[];
 }
 
@@ -26,14 +16,6 @@ export interface ITemplate {
   tags: string[];
   component: React.ReactElement<any>;
   configuration: React.ReactElement<any>;
-}
-
-export interface IComponentCascader {
-  value: string;
-  label: string;
-  parent: string;
-  component?: IComponentDefinition;
-  children?: IComponentDefinition[];
 }
 
 export interface ICloudComponent extends FC<any> {
@@ -500,3 +482,28 @@ export interface DataSource {
 }
 
 export const defaultEqualityFn = (a: any, b: any) => a === b;
+
+export interface IComponentTagDefinition {
+  id?: number;
+  path: string;
+  name: string;
+  parentPath?: string;
+  library: string;
+  count?: number;
+}
+
+export interface IComponentLibraryDefinition {
+  id?: string;
+  name?: string;
+  type?: 'local' | 'remote';
+  description?: string;
+  tags: IComponentTagDefinition[];
+  components: IComponentDefinition[];
+  total?: number;
+}
+
+export interface CheckPoint {
+  id?: string;
+  name: string;
+  version?: Date | string;
+}

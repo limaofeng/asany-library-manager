@@ -1,3 +1,4 @@
+import { useEffect } from '@storybook/addons';
 import { Meta, Story } from '@storybook/react';
 import React from 'react';
 
@@ -25,6 +26,8 @@ export default meta;
 @library({ name: 'test', description: '测试库', namespace: 'cn.asany.ui.sunmao.test' })
 class TestLibrary {
   @component({
+    name: 'Showme',
+    tags: ['测试/1'],
     symbols: [
       {
         title: 'sdfsdf',
@@ -34,7 +37,7 @@ class TestLibrary {
   })
   showme = Showme;
 
-  @component({ name: 'Boot' })
+  @component({ name: 'Boot', tags: ['测试/1'] })
   boot() {
     return () => <div>---boot---</div>;
   }
@@ -49,7 +52,7 @@ function TestSunmao() {
     console.log('all components', sketch.components);
 
     console.log('blocks', sketch.getComponentData(sketch.components[0].id));
-    const block = sketch.getBlock(id);
+    const block = sketch.getBlock(id)!;
     console.log('block:', block);
     console.log('html element:', document.getElementById(block.id));
     const [comid, blkey] = block.id.split(':');
@@ -94,6 +97,14 @@ const Template: Story = () => {
   // }
 
   sunmao.addLibrary(x as any);
+
+  useEffect(() => {
+    console.log(
+      'sunmao.getTreeDate',
+      sunmao.getTreeDate((component) => component.library == '')
+    );
+    console.log('sunmao.getTreeDate', sunmao.getLibrary('test'));
+  }, []);
 
   return (
     <SunmaoProvider sunmao={sunmao}>

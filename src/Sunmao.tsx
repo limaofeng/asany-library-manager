@@ -4,7 +4,6 @@ import {
   ComponentSelector,
   ComponentTreeNode,
   DataSourceLoader,
-  IComponentCascader,
   IComponentDefinition,
   ILibraryDefinition,
   ITemplate,
@@ -14,6 +13,23 @@ import {
 type AggregationLibrary = {
   [key: string]: ComponentType<any>;
 };
+
+function initTag(tag: string, rootTags: any[], component: any) {
+  tag.split('/').forEach((key, index, array) => {
+    let subTag = rootTags.find(({ id }) => id === key);
+    if (!subTag) {
+      rootTags.push((subTag = { id: key, value: key, label: key, children: [] }));
+    }
+    rootTags = subTag.children;
+    if (array.length === index + 1) {
+      rootTags.push({
+        ...component,
+        value: component.name,
+        label: component.title || component.name,
+      });
+    }
+  });
+}
 
 class Sunmao {
   private libraries: ILibraryDefinition[] = [];
@@ -79,21 +95,8 @@ class Sunmao {
     if (component.tags) {
       for (const tag of component.tags) {
         let rootTags = this.tags;
-        // eslint-disable-next-line no-loop-func
-        tag.split('/').forEach((key, index, array) => {
-          let subTag = rootTags.find(({ id }) => id === key);
-          if (!subTag) {
-            rootTags.push((subTag = { id: key, value: key, label: key, children: [] }));
-          }
-          rootTags = subTag.children;
-          if (array.length === index + 1) {
-            rootTags.push({
-              ...root.info,
-              value: root.info.name,
-              label: root.info.title || root.info.name,
-            });
-          }
-        });
+        initTag(tag, rootTags, component);
+        initTag(tag, (component.library as ILibraryDefinition).tags, component);
       }
     }
     this.components.set(component.name, component);
@@ -103,9 +106,6 @@ class Sunmao {
 
   addLibrary(...librarys: ILibraryDefinition[]) {
     librarys.forEach((library) => {
-      library.components.forEach((item) => {
-        item.library = library;
-      });
       this.libraries.push(library);
       this.addComponents(library.components);
     });
@@ -135,10 +135,18 @@ class Sunmao {
     return Array.from(this.components.values()).filter(selector);
   }
 
-  getComponentsByTag(tag: string | string[]): IComponentCascader[] {
+  getTreeDate(tag?: string | string[] | ComponentSelector): ComponentTreeNode[] {
+    if (!tag || !tag.length) {
+      return this.tags;
+    }
+    if (typeof tag === 'function') {
+      const components = this.getComponents(tag);
+      console.warn('getTreeDate selector 未实现', components);
+      return [];
+    }
     if (tag instanceof Array) {
-      return tag.reduce((l: IComponentCascader[], r: string) => {
-        l.push(...this.getComponentsByTag(r));
+      return tag.reduce((l: ComponentTreeNode[], r: string) => {
+        l.push(...this.getTreeDate(r));
         return l;
       }, []);
     }
@@ -169,10 +177,6 @@ class Sunmao {
     this.listeners.push(callback.bind(this));
     return this.unsubscribe(callback);
   };
-
-  getTreeDate(): ComponentTreeNode[] {
-    return this.tags;
-  }
 }
 
 export default Sunmao;
