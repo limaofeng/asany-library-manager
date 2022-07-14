@@ -1,3 +1,12 @@
+## [0.2.38](https://github.com/limaofeng/sunmao/compare/v0.2.37...v0.2.38) (2022-07-14)
+
+
+### Features
+
+* 为单独的库生成 tags ([386f85e](https://github.com/limaofeng/sunmao/commit/386f85edc68483c269a655c6eb502112f5ec0725))
+
+
+
 ## [0.2.37](https://github.com/limaofeng/sunmao/compare/v0.2.36...v0.2.37) (2022-07-12)
 
 
