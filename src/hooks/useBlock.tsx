@@ -14,9 +14,7 @@ import {
   UseBlockCache,
 } from '../typings';
 
-export default function useBlock<P = DivProvider, T extends IBlockDataProps = any>(
-  options: IBlockOptions<T>
-): IUseBlock<T, P> {
+function useBlock<T extends IBlockDataProps = any, P = DivProvider>(options: IBlockOptions<T>): IUseBlock<T, P> {
   const sketch = useSketch();
   const store = useContext<IReactComponentStoreContext>(ReactComponentContext);
   // 获取 block 的 key 即原来的 parentBlockKey + key
@@ -144,3 +142,5 @@ export default function useBlock<P = DivProvider, T extends IBlockDataProps = an
 
   return cache.current.result;
 }
+
+export default useBlock;
