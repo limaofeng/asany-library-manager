@@ -1,3 +1,7 @@
+## [0.2.39](https://github.com/limaofeng/sunmao/compare/v0.2.38...v0.2.39) (2022-07-18)
+
+
+
 ## [0.2.38](https://github.com/limaofeng/sunmao/compare/v0.2.37...v0.2.38) (2022-07-14)
 
 
