@@ -232,6 +232,10 @@ export interface IComponentDefinition {
    * 所属组件库
    */
   library?: ILibraryDefinition | string;
+  /**
+   * 额外信息
+   */
+  [key: string]: any;
 }
 
 export type LibraryMetadata = {
@@ -279,6 +283,10 @@ export interface ComponentMetadata {
    * 可以使用的子组件 (用于拖拽支持)
    */
   symbols?: IComponentDragObject[];
+  /**
+   * 额外信息
+   */
+  [key: string]: any;
 }
 
 export const METADATA_KEY_COMPONENTS = '_COMPONENTS';

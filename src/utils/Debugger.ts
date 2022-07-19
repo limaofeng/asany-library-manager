@@ -1,5 +1,6 @@
 export default class Debugger {
-  constructor(private isDebug?: boolean) {
+  private isDebug: boolean | undefined;
+  constructor(isDebug?: boolean) {
     this.isDebug = isDebug;
   }
   public log(...args: any[]) {
