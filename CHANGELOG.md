@@ -1,3 +1,12 @@
+## [0.2.40](https://github.com/limaofeng/sunmao/compare/v0.2.39...v0.2.40) (2022-07-19)
+
+
+### Features
+
+* component 支持自定义属性 ([defa1bf](https://github.com/limaofeng/sunmao/commit/defa1bfc2bd931066d9146a6b78ea95c53505786))
+
+
+
 ## [0.2.39](https://github.com/limaofeng/sunmao/compare/v0.2.38...v0.2.39) (2022-07-18)
 
 
