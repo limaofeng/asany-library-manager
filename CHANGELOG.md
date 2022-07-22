@@ -1,3 +1,12 @@
+## [0.2.41](https://github.com/limaofeng/sunmao/compare/v0.2.40...v0.2.41) (2022-07-22)
+
+
+### Features
+
+* 优化 BlockProvider ([dc07ed8](https://github.com/limaofeng/sunmao/commit/dc07ed80831c87c4bcde51e141d3bbc4b7fa17ea))
+
+
+
 ## [0.2.40](https://github.com/limaofeng/sunmao/compare/v0.2.39...v0.2.40) (2022-07-19)
 
 
