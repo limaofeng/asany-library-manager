@@ -27,7 +27,7 @@ type BlockProviderProps = IBlockProviderProps<any> &
   };
 
 const BlockProvider = React.forwardRef(function BlockProvider(props: BlockProviderProps, ref: any) {
-  const { getId, onBlockClick, onClick } = props;
+  const { getId, onBlockClick, onClick, deps, as, blockKey, children, ...otherProps } = props;
 
   const handleClick = useCallback(
     (e) => {
@@ -36,8 +36,6 @@ const BlockProvider = React.forwardRef(function BlockProvider(props: BlockProvid
     },
     [onBlockClick, onClick]
   );
-
-  const { blockKey, children, deps, as } = props;
 
   const element = useMemo(() => {
     if (!as) {
@@ -63,7 +61,7 @@ const BlockProvider = React.forwardRef(function BlockProvider(props: BlockProvid
         {React.createElement(
           element,
           {
-            ...props,
+            ...otherProps,
             onClick: handleClick,
             className: classnames(`block-provider`, props.className),
             ref,
