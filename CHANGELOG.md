@@ -1,3 +1,12 @@
+## [0.2.42](https://github.com/limaofeng/sunmao/compare/v0.2.41...v0.2.42) (2022-07-22)
+
+
+### Features
+
+* 更新 BlockProvider 避免无关属性 ([064f0e0](https://github.com/limaofeng/sunmao/commit/064f0e0f5baa2bed155d560f1d23089d464d1e31))
+
+
+
 ## [0.2.41](https://github.com/limaofeng/sunmao/compare/v0.2.40...v0.2.41) (2022-07-22)
 
 
