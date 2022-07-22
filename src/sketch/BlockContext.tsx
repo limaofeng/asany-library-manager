@@ -1,5 +1,6 @@
-import React, { useContext, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useState } from 'react';
 
+import useMergedRef from '@react-hook/merged-ref';
 import classnames from 'classnames';
 
 import { DivProvider, IBlockProviderProps, UseBlockCache } from '../typings';
@@ -18,41 +19,83 @@ export function BlockRootProvider(props: BlockRootProviderProps) {
   return <BlockContext.Provider value={{}}>{props.children}</BlockContext.Provider>;
 }
 
+type BlockProviderProps = IBlockProviderProps<any> &
+  DivProvider & {
+    getId: () => string;
+    blockKey?: string;
+    onBlockClick: (e?: React.MouseEvent<Element, MouseEvent> | undefined) => void;
+  };
+
+const BlockProvider = React.forwardRef(function BlockProvider(props: BlockProviderProps, ref: any) {
+  const { getId, onBlockClick, onClick } = props;
+
+  const handleClick = useCallback(
+    (e) => {
+      onBlockClick(e);
+      onClick && onClick(e);
+    },
+    [onBlockClick, onClick]
+  );
+
+  const { blockKey, children, deps, as } = props;
+
+  const element = useMemo(() => {
+    if (!as) {
+      return 'div';
+    }
+    if (React.isValidElement(as)) {
+      return React.forwardRef((_props: any, _ref: any): React.ReactElement => {
+        const multiRef = useMergedRef(_ref, (as as any).ref);
+
+        return React.cloneElement(as, {
+          ..._props,
+          className: classnames(as.props.className, _props.className),
+          ref: multiRef,
+        });
+      });
+    }
+    return as;
+  }, [as]);
+
+  return useMemo(() => {
+    return (
+      <BlockContext.Provider value={{ parentBlockKey: blockKey }}>
+        {React.createElement(
+          element,
+          {
+            ...props,
+            onClick: handleClick,
+            className: classnames(`block-provider`, props.className),
+            ref,
+            id: getId(),
+          },
+          children
+        )}
+      </BlockContext.Provider>
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
+});
+
 // TODO 会导致不能刷新 / 或者频繁刷新
 export function buildBlockProvider(
   blockKey: string,
   cache: React.RefObject<UseBlockCache<any, any>>
 ): React.ComponentType<any> {
-  return React.forwardRef(
-    (
-      { tag, clickable, children, onClick: handleClick, deps, ...props }: IBlockProviderProps<any> & DivProvider,
-      ref
-    ) => {
-      const context = useRef({ parentBlockKey: blockKey });
+  return React.forwardRef((props: IBlockProviderProps<any> & DivProvider, ref) => {
+    const handleGetId = useCallback(() => {
+      return cache.current!.id;
+    }, []);
+
+    const handleClick = useCallback((e) => {
       const {
-        id,
         result: { onClick },
       } = cache.current!;
-      return useMemo(() => {
-        return (
-          <BlockContext.Provider value={context.current}>
-            {React.createElement(
-              tag || 'div',
-              {
-                ...props,
-                onClick: handleClick || onClick,
-                className: classnames(`block-provider`, props.className),
-                ref,
-                id,
-              },
-              children
-            )}
-          </BlockContext.Provider>
-        );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, deps);
-    }
-  );
+      onClick(e);
+    }, []);
+
+    return <BlockProvider getId={handleGetId} {...props} blockKey={blockKey} onBlockClick={handleClick} ref={ref} />;
+  });
 }
 
 export function useBlockContext(key: string) {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useBlock } from '../src/hooks';
 
 function Second() {
@@ -52,8 +52,10 @@ function Showme() {
 
   console.log('>>>>>', props.title);
 
+  const innerRef = useRef();
+
   return (
-    <Provider clickable={true}>
+    <Provider as={<div ref={innerRef} />}>
       Show me your code: {props.title} <br /> key = {key}
       <Second />
     </Provider>

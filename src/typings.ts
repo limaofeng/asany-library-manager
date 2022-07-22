@@ -187,7 +187,7 @@ export type IComponentDragObject = {
   object?: CreateDragObjectFunc;
 };
 
-export interface IComponentDefinition {
+export interface IComponentDefinition<T = any> {
   /**
    * 名称
    */
@@ -211,7 +211,7 @@ export interface IComponentDefinition {
   /**
    * 组件
    */
-  component: ComponentType;
+  component: ComponentType<T>;
   /**
    *  组件标签
    */
@@ -430,13 +430,12 @@ export interface IBlockOptions<T> {
   customizer?: ICustomizer;
 }
 
-export interface IBlockProviderProps<P> {
+export type IBlockProviderProps<P> = {
   ref?: any;
-  clickable?: boolean;
-  tag?: string | ComponentType<P>;
+  as?: React.ComponentType<P> | React.ReactElement | string;
+  children?: React.ReactNode;
   deps?: DependencyList | undefined;
-  children: React.ReactNode;
-}
+};
 
 export type DivProvider = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
